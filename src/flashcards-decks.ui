@@ -8,7 +8,7 @@
         <property name="can-unfold">false</property>
 
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="list">
             <property name="orientation">vertical</property>
 
             <child>
@@ -178,6 +178,45 @@
                   </object>
                 </child>
 
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkBox" id="cards">
+            <property name="orientation">vertical</property>
+
+            <child>
+              <object class="AdwHeaderBar">
+                <property name="title-widget">
+                  <object class="AdwWindowTitle">
+                    <property name="title"></property>
+                  </object>
+                </property>
+
+                <style>
+                  <class name="flat"/>
+                </style>
+
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Back</property>
+                    <property name="icon-name">go-previous-symbolic</property>
+
+                    <signal name="clicked" handler="go_back" object="FlashcardsDecks" swapped="no"/>
+
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkBox">
+                <property name="hexpand">true</property>
+                <property name="vexpand">true</property>
               </object>
             </child>
 

@@ -30,6 +30,9 @@ struct _FlashcardsDecks
   AdwLeaflet           *leaflet;
   GtkListBox           *decks;
   GtkButton            *new_deck_button;
+
+  GtkBox               *list;
+  GtkBox               *cards;
 };
 
 G_DEFINE_FINAL_TYPE (FlashcardsDecks, flashcards_decks, GTK_TYPE_BOX)
@@ -47,6 +50,13 @@ static void
 on_row_activated (GtkButton       *button,
                   FlashcardsDecks *self)
 {
+  adw_leaflet_set_visible_child (self->leaflet, GTK_WIDGET (self->cards));
+}
+
+static void
+on_row_edit (GtkButton       *button,
+             FlashcardsDecks *self)
+{
   adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_FORWARD);
 }
 
@@ -54,7 +64,8 @@ static void
 go_back (GtkButton       *button,
          FlashcardsDecks *self)
 {
-  adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_BACK);
+  adw_leaflet_set_visible_child (self->leaflet, GTK_WIDGET (self->list));
+  /* adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_BACK); */
 }
 
 /* Overrides */
@@ -68,6 +79,9 @@ flashcards_decks_class_init (FlashcardsDecksClass *klass)
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, leaflet);
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, new_deck_button);
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, decks);
+
+  gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, list);
+  gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, cards);
 
   gtk_widget_class_bind_template_callback (widget_class, on_new_deck);
   gtk_widget_class_bind_template_callback (widget_class, go_back);
@@ -100,7 +114,8 @@ flashcards_decks_init (FlashcardsDecks *self)
 
     adw_action_row_set_activatable_widget (row, GTK_WIDGET (button));
 
-    g_signal_connect (edit_button, "clicked", G_CALLBACK (on_row_activated), self);
+    g_signal_connect (edit_button, "clicked", G_CALLBACK (on_row_edit), self);
+    g_signal_connect (row, "activated", G_CALLBACK (on_row_activated), self);
 
     gtk_list_box_append (self->decks, GTK_WIDGET (row));
   }
