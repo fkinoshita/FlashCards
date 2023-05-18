@@ -72,7 +72,7 @@
                                             <property name="spacing">12</property>
 
                                             <child>
-                                              <object class="GtkListBox" id="decks">
+                                              <object class="GtkListBox" id="decks_list">
                                                 <property name="selection-mode">none</property>
 
                                                 <style>
@@ -177,6 +177,104 @@
                     <property name="icon-name">edit-find-symbolic</property>
                   </object>
                 </child>
+
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwBin">
+                <property name="child">
+                  <object class="GtkOverlay">
+                    <property name="vexpand">True</property>
+
+                    <property name="child">
+                      <object class="GtkScrolledWindow">
+
+                        <property name="child">
+                          <object class="AdwBin">
+                            <property name="child">
+                              <object class="GtkScrolledWindow">
+
+                                <property name="child">
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="hexpand">true</property>
+                                    <property name="vexpand">true</property>
+                                    <property name="valign">start</property>
+                                    <property name="margin-top">18</property>
+                                    <property name="margin-bottom">30</property>
+                                    <property name="margin-start">18</property>
+                                    <property name="margin-end">18</property>
+
+                                    <child>
+                                      <object class="AdwClamp">
+                                        <property name="maximum-size">400</property>
+                                        <property name="tightening-threshold">300</property>
+
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="orientation">vertical</property>
+                                            <property name="valign">center</property>
+                                            <property name="spacing">12</property>
+
+                                            <child>
+                                              <object class="GtkListBox" id="cards_list">
+                                                <property name="selection-mode">none</property>
+
+                                                <style>
+                                                  <class name="boxed-list"/>
+                                                </style>
+
+                                              </object>
+                                            </child>
+
+                                          </object>
+                                        </child>
+
+                                      </object>
+                                    </child>
+
+                                  </object>
+                                </property>
+
+                              </object>
+                            </property>
+                          </object>
+                        </property>
+
+                      </object>
+                    </property>
+
+                    <child type="overlay">
+                      <object class="GtkButton" id="new_card_button">
+                        <property name="halign">center</property>
+                        <property name="valign">end</property>
+
+                        <signal name="clicked" handler="on_new_card" object="FlashcardsDecks" swapped="no"/>
+
+                        <style>
+                          <class name="suggested-action"/>
+                          <class name="pill"/>
+                          <class name="new-deck-button"/>
+                        </style>
+
+                        <layout>
+                          <property name="measure">true</property>
+                          <property name="clip-overlay">true</property>
+                        </layout>
+
+                        <child>
+                          <object class="AdwButtonContent">
+                            <property name="label" translatable="yes">Add Card</property>
+                            <property name="icon-name">list-add-symbolic</property>
+                          </object>
+                        </child>
+
+                      </object>
+                    </child>
+
+                  </object>
+                </property>
 
               </object>
             </child>

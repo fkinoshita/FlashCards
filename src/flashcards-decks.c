@@ -28,7 +28,7 @@ struct _FlashcardsDecks
 
   /* Template widgets */
   AdwLeaflet           *leaflet;
-  GtkListBox           *decks;
+  GtkListBox           *decks_list;
   GtkButton            *new_deck_button;
 
   GtkBox               *list;
@@ -44,6 +44,13 @@ on_new_deck (GtkButton         *button,
              FlashcardsDecks   *self)
 {
   adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_FORWARD);
+}
+
+static void
+on_new_card (GtkButton         *button,
+             FlashcardsDecks   *self)
+{
+  g_print ("new card\n");
 }
 
 static void
@@ -78,12 +85,13 @@ flashcards_decks_class_init (FlashcardsDecksClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/fkinoshita/FlashCards/flashcards-decks.ui");
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, leaflet);
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, new_deck_button);
-  gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, decks);
+  gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, decks_list);
 
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, list);
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, cards);
 
   gtk_widget_class_bind_template_callback (widget_class, on_new_deck);
+  gtk_widget_class_bind_template_callback (widget_class, on_new_card);
   gtk_widget_class_bind_template_callback (widget_class, go_back);
 }
 
@@ -117,7 +125,7 @@ flashcards_decks_init (FlashcardsDecks *self)
     g_signal_connect (edit_button, "clicked", G_CALLBACK (on_row_edit), self);
     g_signal_connect (row, "activated", G_CALLBACK (on_row_activated), self);
 
-    gtk_list_box_append (self->decks, GTK_WIDGET (row));
+    gtk_list_box_append (self->decks_list, GTK_WIDGET (row));
   }
 }
 
