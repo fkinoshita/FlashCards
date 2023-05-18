@@ -27,26 +27,34 @@ struct _FlashcardsDecks
   GtkBox                parent_instance;
 
   /* Template widgets */
+  AdwLeaflet           *leaflet;
   GtkListBox           *decks;
   GtkButton            *new_deck_button;
 };
 
 G_DEFINE_FINAL_TYPE (FlashcardsDecks, flashcards_decks, GTK_TYPE_BOX)
 
-enum {
-  NEW,
-  N_SIGNALS,
-};
-
-static guint signals [N_SIGNALS] = {0, };
-
 /* Callbacks */
 
 static void
 on_new_deck (GtkButton         *button,
-             FlashcardsDecks *self)
+             FlashcardsDecks   *self)
 {
-  g_signal_emit (self, signals[NEW], 0);
+  adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_FORWARD);
+}
+
+static void
+on_row_activated (GtkButton       *button,
+                  FlashcardsDecks *self)
+{
+  adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_FORWARD);
+}
+
+static void
+go_back (GtkButton       *button,
+         FlashcardsDecks *self)
+{
+  adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_BACK);
 }
 
 /* Overrides */
@@ -56,20 +64,13 @@ flashcards_decks_class_init (FlashcardsDecksClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  signals[NEW] = g_signal_new ("new_deck",
-                               FLASHCARDS_TYPE_DECKS,
-                               G_SIGNAL_RUN_FIRST,
-                               0,
-                               NULL, NULL,
-                               g_cclosure_marshal_VOID__VOID,
-                               G_TYPE_NONE,
-                               0);
-
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/fkinoshita/FlashCards/flashcards-decks.ui");
+  gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, leaflet);
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, new_deck_button);
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, decks);
 
   gtk_widget_class_bind_template_callback (widget_class, on_new_deck);
+  gtk_widget_class_bind_template_callback (widget_class, go_back);
 }
 
 static void
@@ -90,6 +91,8 @@ flashcards_decks_init (FlashcardsDecks *self)
     adw_action_row_add_suffix (row, GTK_WIDGET (icon));
 
     adw_action_row_set_activatable_widget (row, GTK_WIDGET (button));
+
+    g_signal_connect (row, "activated", G_CALLBACK (on_row_activated), self);
 
     gtk_list_box_append (self->decks, GTK_WIDGET (row));
   }

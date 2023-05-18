@@ -45,13 +45,6 @@ on_start (FlashcardsWelcome *welcome,
   adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_FORWARD);
 }
 
-static void
-on_new_deck (FlashcardsDecks   *decks,
-             FlashcardsWindow  *self)
-{
-  adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_FORWARD);
-}
-
 /* Overrides */
 
 static void
@@ -65,7 +58,6 @@ flashcards_window_class_init (FlashcardsWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, FlashcardsWindow, decks);
 
   gtk_widget_class_bind_template_callback (widget_class, on_start);
-  gtk_widget_class_bind_template_callback (widget_class, on_new_deck);
 }
 
 static void

@@ -19,9 +19,7 @@
             </child>
 
             <child>
-              <object class="FlashcardsDecks" id="decks">
-                <signal name="new_deck" handler="on_new_deck" object="FlashcardsWindow" swapped="no"/>
-              </object>
+              <object class="FlashcardsDecks" id="decks"/>
             </child>
 
           </object>
