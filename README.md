@@ -1,7 +1,7 @@
 <h1 align="center">
   <img src="data/icons/hicolor/scalable/apps/io.github.fkinoshita.FlashCards.svg" alt="Flash Cards Icon" width="192" height="192"/>
   <br>
-  Telegraph
+  Flash Cards
 </h1>
 
 <p align="center"><strong>Learn with cards</strong></p>
