@@ -35,6 +35,10 @@
         <property name="hexpand">true</property>
         <property name="vexpand">true</property>
 
+        <style>
+          <class name="icon-dropshadow"/>
+        </style>
+
         <child>
           <object class="GtkButton" id="create_deck_button">
             <property name="label" translatable="yes">Create Deck</property>
