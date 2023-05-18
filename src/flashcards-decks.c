@@ -82,17 +82,25 @@ flashcards_decks_init (FlashcardsDecks *self)
     AdwActionRow *row;
     GtkImage *icon;
     GtkButton *button;
+    GtkButton *edit_button;
 
     row = ADW_ACTION_ROW (adw_action_row_new ());
     icon = GTK_IMAGE (gtk_image_new_from_icon_name ("go-next-symbolic"));
     button = GTK_BUTTON (gtk_button_new ());
+    edit_button = GTK_BUTTON ( gtk_button_new_from_icon_name ("document-edit-symbolic"));
 
     adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), "Espanol");
+
+    gtk_widget_add_css_class (GTK_WIDGET (edit_button), "flat");
+    gtk_widget_add_css_class (GTK_WIDGET (edit_button), "circular");
+    gtk_widget_set_size_request (GTK_WIDGET (edit_button), 50, 32);
+    adw_action_row_add_suffix (row, GTK_WIDGET (edit_button));
+
     adw_action_row_add_suffix (row, GTK_WIDGET (icon));
 
     adw_action_row_set_activatable_widget (row, GTK_WIDGET (button));
 
-    g_signal_connect (row, "activated", G_CALLBACK (on_row_activated), self);
+    g_signal_connect (edit_button, "clicked", G_CALLBACK (on_row_activated), self);
 
     gtk_list_box_append (self->decks, GTK_WIDGET (row));
   }
