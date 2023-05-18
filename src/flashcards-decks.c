@@ -27,6 +27,7 @@ struct _FlashcardsDecks
   GtkBox                parent_instance;
 
   /* Template widgets */
+  GtkListBox           *decks;
   GtkButton            *new_deck_button;
 };
 
@@ -66,6 +67,7 @@ flashcards_decks_class_init (FlashcardsDecksClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/fkinoshita/FlashCards/flashcards-decks.ui");
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, new_deck_button);
+  gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, decks);
 
   gtk_widget_class_bind_template_callback (widget_class, on_new_deck);
 }
@@ -74,6 +76,23 @@ static void
 flashcards_decks_init (FlashcardsDecks *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
+
+  for (int i = 0; i < 4; i++) {
+    AdwActionRow *row;
+    GtkImage *icon;
+    GtkButton *button;
+
+    row = ADW_ACTION_ROW (adw_action_row_new ());
+    icon = GTK_IMAGE (gtk_image_new_from_icon_name ("go-next-symbolic"));
+    button = GTK_BUTTON (gtk_button_new ());
+
+    adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), "Espanol");
+    adw_action_row_add_suffix (row, GTK_WIDGET (icon));
+
+    adw_action_row_set_activatable_widget (row, GTK_WIDGET (button));
+
+    gtk_list_box_append (self->decks, GTK_WIDGET (row));
+  }
 }
 
 GtkWidget*
