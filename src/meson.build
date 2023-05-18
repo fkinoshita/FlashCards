@@ -1,6 +1,8 @@
 flashcards_sources = [
   'main.c',
   'flashcards-application.c',
+  'flashcards-welcome.c',
+  'flashcards-decks.c',
   'flashcards-window.c',
 ]
 

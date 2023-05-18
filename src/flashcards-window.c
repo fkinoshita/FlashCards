@@ -20,6 +20,8 @@
 
 #include "config.h"
 
+#include "flashcards-welcome.h"
+#include "flashcards-decks.h"
 #include "flashcards-window.h"
 
 struct _FlashcardsWindow
@@ -27,10 +29,9 @@ struct _FlashcardsWindow
   AdwApplicationWindow  parent_instance;
 
   /* Template widgets */
-  GtkStack             *main_stack;
   AdwLeaflet           *leaflet;
-
-  GtkButton            *create_deck_button;
+  FlashcardsWelcome    *welcome;
+  FlashcardsDecks      *decks;
 };
 
 G_DEFINE_FINAL_TYPE (FlashcardsWindow, flashcards_window, ADW_TYPE_APPLICATION_WINDOW)
@@ -38,36 +39,17 @@ G_DEFINE_FINAL_TYPE (FlashcardsWindow, flashcards_window, ADW_TYPE_APPLICATION_W
 /* Callbacks */
 
 static void
-start (GtkButton *button,
-            gpointer   user_data)
+on_start (FlashcardsWelcome *welcome,
+          FlashcardsWindow  *self)
 {
-  FlashcardsWindow *window;
-
-  window = FLASHCARDS_WINDOW (user_data);
-
-  gtk_stack_set_visible_child_name (window->main_stack, "decks-view");
+  adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_FORWARD);
 }
 
 static void
-show_deck_creation (GtkButton *button,
-                    gpointer   user_data)
+on_new_deck (FlashcardsDecks   *decks,
+             FlashcardsWindow  *self)
 {
-  FlashcardsWindow *window;
-
-  window = FLASHCARDS_WINDOW (user_data);
-
-  adw_leaflet_navigate (window->leaflet, ADW_NAVIGATION_DIRECTION_FORWARD);
-}
-
-static void
-show_decks (GtkButton *button,
-            gpointer   user_data)
-{
-  FlashcardsWindow *window;
-
-  window = FLASHCARDS_WINDOW (user_data);
-
-  adw_leaflet_navigate (window->leaflet, ADW_NAVIGATION_DIRECTION_BACK);
+  adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_FORWARD);
 }
 
 /* Overrides */
@@ -78,18 +60,22 @@ flashcards_window_class_init (FlashcardsWindowClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/fkinoshita/FlashCards/flashcards-window.ui");
-  gtk_widget_class_bind_template_child (widget_class, FlashcardsWindow, main_stack);
   gtk_widget_class_bind_template_child (widget_class, FlashcardsWindow, leaflet);
+  gtk_widget_class_bind_template_child (widget_class, FlashcardsWindow, welcome);
+  gtk_widget_class_bind_template_child (widget_class, FlashcardsWindow, decks);
 
-  gtk_widget_class_bind_template_child (widget_class, FlashcardsWindow, create_deck_button);
-
-  gtk_widget_class_bind_template_callback (widget_class, start);
-  gtk_widget_class_bind_template_callback (widget_class, show_decks);
-  gtk_widget_class_bind_template_callback (widget_class, show_deck_creation);
+  gtk_widget_class_bind_template_callback (widget_class, on_start);
+  gtk_widget_class_bind_template_callback (widget_class, on_new_deck);
 }
 
 static void
 flashcards_window_init (FlashcardsWindow *self)
 {
+  FlashcardsWelcome *welcome;
+  FlashcardsDecks *decks;
+
+  welcome = FLASHCARDS_WELCOME (flashcards_welcome_new ());
+  decks = FLASHCARDS_DECKS (flashcards_decks_new ());
+
   gtk_widget_init_template (GTK_WIDGET (self));
 }
