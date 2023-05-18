@@ -72,7 +72,6 @@ go_back (GtkButton       *button,
          FlashcardsDecks *self)
 {
   adw_leaflet_set_visible_child (self->leaflet, GTK_WIDGET (self->list));
-  /* adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_BACK); */
 }
 
 /* Overrides */
