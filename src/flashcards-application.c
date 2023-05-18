@@ -73,6 +73,7 @@ flashcards_application_about_action (GSimpleAction *action,
                                      gpointer       user_data)
 {
   static const char *developers[] = {"Felipe Kinoshita", NULL};
+  static const char *designers[] = {"Tobias Bernard", NULL};
   FlashcardsApplication *self = user_data;
   GtkWindow *window = NULL;
 
@@ -86,6 +87,7 @@ flashcards_application_about_action (GSimpleAction *action,
                          "developer-name", "Felipe Kinoshita",
                          "version", "0.1.0",
                          "developers", developers,
+                         "designers", designers,
                          "copyright", "© 2023 Felipe Kinoshita",
                          NULL);
 }
