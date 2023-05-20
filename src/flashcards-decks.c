@@ -29,6 +29,7 @@ struct _FlashcardsDecks
   /* Template widgets */
   AdwLeaflet           *leaflet;
   GtkListBox           *decks_list;
+  GtkListBox           *cards_list;
   GtkButton            *new_deck_button;
 
   GtkBox               *list;
@@ -85,6 +86,7 @@ flashcards_decks_class_init (FlashcardsDecksClass *klass)
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, leaflet);
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, new_deck_button);
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, decks_list);
+  gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, cards_list);
 
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, list);
   gtk_widget_class_bind_template_child (widget_class, FlashcardsDecks, cards);
@@ -125,6 +127,24 @@ flashcards_decks_init (FlashcardsDecks *self)
     g_signal_connect (row, "activated", G_CALLBACK (on_row_activated), self);
 
     gtk_list_box_append (self->decks_list, GTK_WIDGET (row));
+  }
+
+  for (int i = 0; i < 3; i++) {
+    AdwActionRow *row;
+    GtkButton *edit_button;
+
+    row = ADW_ACTION_ROW (adw_action_row_new ());
+
+    edit_button = GTK_BUTTON ( gtk_button_new_from_icon_name ("document-edit-symbolic"));
+
+    adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), "to embrace");
+
+    gtk_widget_add_css_class (GTK_WIDGET (edit_button), "flat");
+    gtk_widget_add_css_class (GTK_WIDGET (edit_button), "circular");
+    gtk_widget_set_size_request (GTK_WIDGET (edit_button), 50, 32);
+    adw_action_row_add_suffix (row, GTK_WIDGET (edit_button));
+
+    gtk_list_box_append (self->cards_list, GTK_WIDGET (row));
   }
 }
 
