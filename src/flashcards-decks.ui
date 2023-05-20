@@ -8,10 +8,9 @@
         <property name="can-unfold">false</property>
 
         <child>
-          <object class="GtkBox" id="list">
-            <property name="orientation">vertical</property>
+          <object class="AdwToolbarView" id="list">
 
-            <child>
+            <child type="top">
               <object class="AdwHeaderBar">
                 <property name="title-widget">
                   <object class="AdwWindowTitle">
@@ -35,7 +34,7 @@
               </object>
             </child>
 
-            <child>
+            <property name="content">
               <object class="AdwBin">
                 <property name="child">
                   <object class="GtkOverlay">
@@ -131,16 +130,15 @@
                 </property>
 
               </object>
-            </child>
+            </property>
 
           </object>
         </child>
 
         <child>
-          <object class="GtkBox">
-            <property name="orientation">vertical</property>
+          <object class="AdwToolbarView">
 
-            <child>
+            <child type="top">
               <object class="AdwHeaderBar">
                 <property name="title-widget">
                   <object class="AdwWindowTitle">
@@ -181,7 +179,7 @@
               </object>
             </child>
 
-            <child>
+            <property name="content">
               <object class="AdwBin">
                 <property name="child">
                   <object class="GtkOverlay">
@@ -329,7 +327,7 @@
                 </property>
 
               </object>
-            </child>
+            </property>
 
           </object>
         </child>
