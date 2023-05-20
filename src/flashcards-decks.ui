@@ -218,6 +218,46 @@
                                             <property name="spacing">30</property>
 
                                             <child>
+                                              <object class="GtkOverlay">
+                                                <property name="halign">center</property>
+
+                                                <child>
+                                                  <object class="AdwAvatar">
+                                                    <property name="show-initials">false</property>
+                                                    <property name="size">120</property>
+                                                  </object>
+                                                </child>
+
+                                                <child type="overlay">
+                                                  <object class="AdwBin">
+                                                    <property name="halign">end</property>
+                                                    <property name="valign">end</property>
+
+                                                    <style>
+                                                      <class name="cutout-button"/>
+                                                    </style>
+
+                                                    <child>
+                                                      <object class="GtkButton">
+                                                        <property name="icon-name">document-edit-symbolic</property>
+
+                                                        <style>
+                                                          <class name="circular"/>
+                                                        </style>
+
+                                                        <accessibility>
+                                                          <property name="label" translatable="yes">Edit Deck Avatar</property>
+                                                        </accessibility>
+                                                      </object>
+                                                    </child>
+
+                                                  </object>
+                                                </child>
+
+                                              </object>
+                                            </child>
+
+                                            <child>
                                               <object class="AdwPreferencesGroup">
 
                                                 <child>
