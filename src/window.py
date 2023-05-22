@@ -190,7 +190,20 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         edit_button.add_css_class('circular')
         suffix.append(edit_button)
 
+        edit_button.connect('clicked', self.__on_edit_card_button_clicked, card)
+
         row.add_suffix(suffix)
 
         return row
     
+
+    def __on_edit_card_button_clicked(self, button, card):
+        builder = Gtk.Builder.new_from_resource(
+            "/io/github/fkinoshita/FlashCards/card_edit_page.ui"
+        )
+        card_edit_page = builder.get_object("card_edit_page")
+        card_edit_page.set_transient_for(self)
+        card_edit_page.set_modal(True)
+
+        card_edit_page.present()
+
