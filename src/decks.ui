@@ -394,6 +394,26 @@
                         </object>
                       </child>
 
+                      <child type="overlay">
+                        <object class="GtkButton" id="edit_button">
+                          <property name="tooltip-text" translatable="yes">Edit Card</property>
+                          <property name="icon-name">document-edit-symbolic</property>
+                          <property name="halign">start</property>
+                          <property name="valign">end</property>
+
+                          <style>
+                            <class name="circular"/>
+                            <class name="new-deck-button"/>
+                          </style>
+
+                          <layout>
+                            <property name="measure">true</property>
+                            <property name="clip-overlay">true</property>
+                          </layout>
+
+                        </object>
+                      </child>
+
                     </object>
                   </property>
 
