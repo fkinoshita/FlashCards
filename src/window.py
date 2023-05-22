@@ -76,6 +76,16 @@ class FlashcardsWindow(Adw.ApplicationWindow):
 
 
     def __on_start_button_clicked(self, button):
+        if self.decks_model.props.n_items < 1:
+            deck = Deck()
+
+            self.decks_model.append(deck)
+
+            self.leaflet.set_visible_child(self.decks_page)
+            self.decks_page.leaflet.set_visible_child(self.decks_page.edit_page)
+
+            return
+
         self.leaflet.set_visible_child(self.decks_page)
 
 
