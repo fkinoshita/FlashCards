@@ -139,8 +139,13 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         self.decks_page.cards_list.bind_model(self.current_deck.cards_model, self.__cards_list_create_row)
 
         self.decks_page.deck_name.set_text(self.current_deck.name)
+        self.decks_page.deck_name.connect('changed', self.__on_deck_name_changed)
 
         self.decks_page.leaflet.set_visible_child(self.decks_page.edit_page)
+
+
+    def __on_deck_name_changed(self, entry):
+        self.current_deck.name = entry.get_text()
 
 
     def __cards_list_create_row(self, card):
