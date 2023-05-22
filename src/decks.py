@@ -32,6 +32,7 @@ class FlashcardsDecks(Gtk.Box):
     decks_list = Gtk.Template.Child()
     new_deck_button = Gtk.Template.Child()
 
+    edit_page_title = Gtk.Template.Child()
     deck_image = Gtk.Template.Child()
     deck_name = Gtk.Template.Child()
     cards_list = Gtk.Template.Child()

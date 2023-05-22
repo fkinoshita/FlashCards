@@ -134,7 +134,7 @@
             <child type="top">
               <object class="AdwHeaderBar">
                 <property name="title-widget">
-                  <object class="AdwWindowTitle">
+                  <object class="AdwWindowTitle" id="edit_page_title">
                     <property name="title" translatable="yes">Edit Deck</property>
                   </object>
                 </property>
