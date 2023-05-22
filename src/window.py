@@ -70,6 +70,8 @@ class FlashcardsWindow(Adw.ApplicationWindow):
 
 
     def _setup_signals(self):
+        self.decks_model.connect('items-changed', lambda *_: self.decks_page.decks_list.bind_model(self.decks_model, self.__decks_list_create_row))
+
         self.welcome_page.start_button.connect('clicked', self.__on_start_button_clicked)
         self.decks_page.new_deck_button.connect('clicked', self.__on_new_deck_button_clicked)
         self.decks_page.new_card_button.connect('clicked', self.__on_new_card_button_clicked)
@@ -160,6 +162,8 @@ class FlashcardsWindow(Adw.ApplicationWindow):
 
     def __on_deck_name_changed(self, entry):
         self.current_deck.name = entry.get_text()
+
+        self.decks_model.emit('items-changed', 0, 0, 0)
 
 
     def __cards_list_create_row(self, card):
