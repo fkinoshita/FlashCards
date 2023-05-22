@@ -82,25 +82,42 @@ class FlashcardsWindow(Adw.ApplicationWindow):
             deck = Deck()
 
             self.current_deck = deck
-
+            self._go_to_deck(True)
             self.decks_model.append(deck)
-
-            self.decks_page.cards_list.bind_model(self.current_deck.cards_model, self.__cards_list_create_row)
-
-            self.decks_page.edit_page_title.set_title(_('Create Deck'));
-
-            self.leaflet.set_visible_child(self.decks_page)
-            self.decks_page.leaflet.set_visible_child(self.decks_page.edit_page)
-            self.decks_page.deck_name.connect('changed', self.__on_deck_name_changed)
-            self.decks_page.deck_name.grab_focus()
 
             return
 
         self.leaflet.set_visible_child(self.decks_page)
 
 
+    def _go_to_deck(self, is_new: bool):
+        if self.current_deck.cards_model.props.n_items < 1:
+            self.decks_page.cards_list.remove_css_class('boxed-list')
+
+        self.decks_page.cards_list.bind_model(self.current_deck.cards_model, self.__cards_list_create_row)
+
+        title = ''
+        if is_new:
+            title = _('Create Deck')
+        else:
+            title = _('Edit Deck')
+
+        self.decks_page.edit_page_title.set_title(title);
+        self.decks_page.deck_name.set_text(self.current_deck.name)
+
+        self.decks_page.deck_name.connect('changed', self.__on_deck_name_changed)
+        self.decks_page.deck_name.grab_focus()
+
+        self.leaflet.set_visible_child(self.decks_page)
+        self.decks_page.leaflet.set_visible_child(self.decks_page.edit_page)
+
+
     def __on_new_deck_button_clicked(self, button):
         deck = Deck()
+
+        self.current_deck = deck
+
+        self._go_to_deck(True)
 
         self.decks_model.append(deck)
 
@@ -153,18 +170,7 @@ class FlashcardsWindow(Adw.ApplicationWindow):
 
         self.current_deck = deck
 
-        if self.current_deck.cards_model.props.n_items < 1:
-            self.decks_page.cards_list.remove_css_class('boxed-list')
-
-        self.decks_page.cards_list.bind_model(self.current_deck.cards_model, self.__cards_list_create_row)
-
-        self.decks_page.edit_page_title.set_title(_('Edit Deck'));
-
-        self.decks_page.deck_name.set_text(self.current_deck.name)
-        self.decks_page.deck_name.connect('changed', self.__on_deck_name_changed)
-        self.decks_page.deck_name.grab_focus()
-
-        self.decks_page.leaflet.set_visible_child(self.decks_page.edit_page)
+        self._go_to_deck(False)
 
 
     def __on_deck_name_changed(self, entry):
