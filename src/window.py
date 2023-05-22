@@ -142,6 +142,7 @@ class FlashcardsWindow(Adw.ApplicationWindow):
             self.decks_page.decks_list.add_css_class('boxed-list')
 
         row = Adw.ActionRow()
+        row.set_title_lines(1)
         row.set_title(deck.name)
         row.set_activatable(True)
 
@@ -191,6 +192,7 @@ class FlashcardsWindow(Adw.ApplicationWindow):
             self.decks_page.cards_list.add_css_class('boxed-list')
 
         row = Adw.ActionRow()
+        row.set_title_lines(1)
         row.set_title(card.front)
         row.set_activatable(True)
 
