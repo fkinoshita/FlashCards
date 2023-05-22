@@ -85,6 +85,8 @@ class FlashcardsWindow(Adw.ApplicationWindow):
 
             self.decks_model.append(deck)
 
+            self.decks_page.cards_list.bind_model(self.current_deck.cards_model, self.__cards_list_create_row)
+
             self.decks_page.edit_page_title.set_title(_('Create Deck'));
 
             self.leaflet.set_visible_child(self.decks_page)
