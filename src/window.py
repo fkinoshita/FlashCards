@@ -21,7 +21,7 @@ from gi.repository import Adw, Gtk, Gio, GObject
 
 from .welcome import FlashcardsWelcome
 from .decks import FlashcardsDecks
-
+from .card_edit_page import FlashcardsCardEditPage
 
 class Card(GObject.Object):
     __gtype_name__ = 'Card'
@@ -94,7 +94,7 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         if self.current_deck.cards_model.props.n_items < 1:
             self.decks_page.cards_list.remove_css_class('boxed-list')
 
-        self.decks_page.cards_list.bind_model(self.current_deck.cards_model, self.__cards_list_create_row)
+        self.decks_page.cards_list.bind_model(self.current_deck.cards_model, self.cards_list_create_row)
 
         title = ''
         if is_new:
@@ -124,10 +124,17 @@ class FlashcardsWindow(Adw.ApplicationWindow):
 
     def __on_new_card_button_clicked(self, button):
         card = Card()
-        card.front = _('Something')
-        card.back = _('Something Else')
+        card.front = _('')
+        card.back = _('')
 
         self.current_deck.cards_model.append(card)
+
+        card_edit_page = FlashcardsCardEditPage(self,
+                                                card,
+                                                transient_for=self,
+                                                modal=True)
+
+        card_edit_page.present()
 
 
     def __decks_list_create_row(self, deck):
@@ -179,7 +186,7 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         self.decks_model.emit('items-changed', 0, 0, 0)
 
 
-    def __cards_list_create_row(self, card):
+    def cards_list_create_row(self, card):
         if not self.decks_page.cards_list.has_css_class('boxed-list'):
             self.decks_page.cards_list.add_css_class('boxed-list')
 
@@ -204,12 +211,10 @@ class FlashcardsWindow(Adw.ApplicationWindow):
     
 
     def __on_edit_card_button_clicked(self, button, card):
-        builder = Gtk.Builder.new_from_resource(
-            "/io/github/fkinoshita/FlashCards/card_edit_page.ui"
-        )
-        card_edit_page = builder.get_object("card_edit_page")
-        card_edit_page.set_transient_for(self)
-        card_edit_page.set_modal(True)
+        card_edit_page = FlashcardsCardEditPage(self,
+                                                card,
+                                                transient_for=self,
+                                                modal=True)
 
         card_edit_page.present()
 

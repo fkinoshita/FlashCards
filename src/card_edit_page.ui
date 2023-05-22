@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <object class="AdwWindow" id="card_edit_page">
+  <template class="FlashcardsCardEditPage" parent="AdwWindow">
     <property name="width-request">420</property>
     <property name="height-request">420</property>
 
@@ -122,6 +122,6 @@
       </object>
     </property>
 
-  </object>
+  </template>
 
 </interface>
