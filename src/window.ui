@@ -11,17 +11,6 @@
 
           <object class="AdwLeaflet" id="leaflet">
             <property name="can-unfold">false</property>
-
-            <child>
-              <object class="FlashcardsWelcome" id="welcome">
-                <signal name="start" handler="on_start" object="FlashcardsWindow" swapped="no"/>
-              </object>
-            </child>
-
-            <child>
-              <object class="FlashcardsDecks" id="decks"/>
-            </child>
-
           </object>
 
         </property>

@@ -8,7 +8,7 @@
         <property name="can-unfold">false</property>
 
         <child>
-          <object class="AdwToolbarView" id="list">
+          <object class="AdwToolbarView" id="list_page">
 
             <child type="top">
               <object class="AdwHeaderBar">
@@ -73,11 +73,6 @@
                                             <child>
                                               <object class="GtkListBox" id="decks_list">
                                                 <property name="selection-mode">none</property>
-
-                                                <style>
-                                                  <class name="boxed-list"/>
-                                                </style>
-
                                               </object>
                                             </child>
 
@@ -102,8 +97,6 @@
                       <object class="GtkButton" id="new_deck_button">
                         <property name="halign">center</property>
                         <property name="valign">end</property>
-
-                        <signal name="clicked" handler="on_new_deck" object="FlashcardsDecks" swapped="no"/>
 
                         <style>
                           <class name="suggested-action"/>
@@ -136,7 +129,7 @@
         </child>
 
         <child>
-          <object class="AdwToolbarView">
+          <object class="AdwToolbarView" id="edit_page">
 
             <child type="top">
               <object class="AdwHeaderBar">
@@ -155,7 +148,7 @@
                     <property name="tooltip-text" translatable="yes">Back</property>
                     <property name="icon-name">go-previous-symbolic</property>
 
-                    <signal name="clicked" handler="go_back" object="FlashcardsDecks" swapped="no"/>
+                    <signal name="clicked" handler="on_back"/>
 
                   </object>
                 </child>
@@ -220,7 +213,7 @@
                                                 <property name="halign">center</property>
 
                                                 <child>
-                                                  <object class="AdwAvatar">
+                                                  <object class="AdwAvatar" id="deck_image">
                                                     <property name="show-initials">false</property>
                                                     <property name="size">120</property>
                                                   </object>
@@ -259,7 +252,7 @@
                                               <object class="AdwPreferencesGroup">
 
                                                 <child>
-                                                  <object class="AdwEntryRow">
+                                                  <object class="AdwEntryRow" id="deck_name">
                                                     <property name="title" translatable="yes">Name</property>
                                                   </object>
                                                 </child>
@@ -270,11 +263,6 @@
                                             <child>
                                               <object class="GtkListBox" id="cards_list">
                                                 <property name="selection-mode">none</property>
-
-                                                <style>
-                                                  <class name="boxed-list"/>
-                                                </style>
-
                                               </object>
                                             </child>
 
@@ -299,8 +287,6 @@
                       <object class="GtkButton" id="new_card_button">
                         <property name="halign">center</property>
                         <property name="valign">end</property>
-
-                        <signal name="clicked" handler="on_new_card" object="FlashcardsDecks" swapped="no"/>
 
                         <style>
                           <class name="suggested-action"/>
@@ -333,7 +319,7 @@
         </child>
 
         <child>
-          <object class="GtkBox" id="cards">
+          <object class="GtkBox" id="card_page">
             <property name="orientation">vertical</property>
 
             <child>
@@ -350,10 +336,10 @@
 
                 <child>
                   <object class="GtkButton">
-                    <property name="label" translatable="yes">Back</property>
+                    <property name="tooltip-text" translatable="yes">Back</property>
                     <property name="icon-name">go-previous-symbolic</property>
 
-                    <signal name="clicked" handler="go_back" object="FlashcardsDecks" swapped="no"/>
+                    <signal name="clicked" handler="on_back"/>
 
                   </object>
                 </child>
@@ -362,9 +348,55 @@
             </child>
 
             <child>
-              <object class="GtkBox">
-                <property name="hexpand">true</property>
-                <property name="vexpand">true</property>
+              <object class="AdwBin">
+                  <property name="child">
+                    <object class="GtkOverlay">
+                      <property name="vexpand">True</property>
+
+                      <property name="child">
+                        <object class="GtkBox">
+                          <property name="hexpand">true</property>
+                          <property name="vexpand">true</property>
+                          <property name="halign">center</property>
+                          <property name="valign">center</property>
+
+                          <child>
+                            <object class="GtkLabel">
+                              <property name="label">Lorem ipsum</property>
+
+                              <style>
+                                <class name="title-1"/>
+                              </style>
+
+                            </object>
+                          </child>
+
+                        </object>
+                      </property>
+
+                      <child type="overlay">
+                        <object class="GtkButton" id="show_answer_button">
+                          <property name="label" translatable="yes">Show Answer</property>
+                          <property name="halign">center</property>
+                          <property name="valign">end</property>
+
+                          <style>
+                            <class name="suggested-action"/>
+                            <class name="pill"/>
+                            <class name="new-deck-button"/>
+                          </style>
+
+                          <layout>
+                            <property name="measure">true</property>
+                            <property name="clip-overlay">true</property>
+                          </layout>
+
+                        </object>
+                      </child>
+
+                    </object>
+                  </property>
+
               </object>
             </child>
 

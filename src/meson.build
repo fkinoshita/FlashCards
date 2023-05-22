@@ -1,22 +1,37 @@
-flashcards_sources = [
-  'main.c',
-  'flashcards-application.c',
-  'flashcards-welcome.c',
-  'flashcards-decks.c',
-  'flashcards-window.c',
-]
+pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
+moduledir = join_paths(pkgdatadir, 'flashcards')
+gnome = import('gnome')
 
-flashcards_deps = [
-  dependency('gtk4'),
-  dependency('libadwaita-1', version: '>= 1.2'),
-]
-
-flashcards_sources += gnome.compile_resources('flashcards-resources',
+gnome.compile_resources('flashcards',
   'flashcards.gresource.xml',
-  c_name: 'flashcards'
+  gresource_bundle: true,
+  install: true,
+  install_dir: pkgdatadir,
 )
 
-executable('flashcards', flashcards_sources,
-  dependencies: flashcards_deps,
-       install: true,
+python = import('python')
+
+conf = configuration_data()
+conf.set('PYTHON', python.find_installation('python3').path())
+conf.set('VERSION', meson.project_version())
+conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
+conf.set('pkgdatadir', pkgdatadir)
+
+configure_file(
+  input: 'flashcards.in',
+  output: 'flashcards',
+  configuration: conf,
+  install: true,
+  install_dir: get_option('bindir'),
+  install_mode: 'r-xr--r--'
 )
+
+flashcards_sources = [
+  '__init__.py',
+  'main.py',
+  'window.py',
+  'welcome.py',
+  'decks.py',
+]
+
+install_data(flashcards_sources, install_dir: moduledir)

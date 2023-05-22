@@ -1,6 +1,10 @@
 data/io.github.fkinoshita.FlashCards.desktop.in
 data/io.github.fkinoshita.FlashCards.appdata.xml.in
 data/io.github.fkinoshita.FlashCards.gschema.xml
-src/main.c
-src/flashcards-window.c
-src/flashcards-window.ui
+src/main.py
+src/window.py
+src/welcome.py
+src/decks.py
+src/window.ui
+src/welcome.ui
+src/decks.ui

@@ -5,6 +5,7 @@
     "sdk" : "org.gnome.Sdk",
     "command" : "flashcards",
     "finish-args" : [
+        "--share=network",
         "--share=ipc",
         "--socket=fallback-x11",
         "--device=dri",

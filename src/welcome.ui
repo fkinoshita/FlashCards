@@ -40,11 +40,9 @@
         </style>
 
         <child>
-          <object class="GtkButton" id="create_deck_button">
+          <object class="GtkButton" id="start_button">
             <property name="label" translatable="yes">Create Deck</property>
             <property name="halign">center</property>
-
-            <signal name="clicked" handler="start" object="FlashcardsWelcome" swapped="no"/>
 
             <style>
               <class name="suggested-action"/>

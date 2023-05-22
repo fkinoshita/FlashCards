@@ -3,9 +3,9 @@
   <gresource prefix="/io/github/fkinoshita/FlashCards">
     <file compressed="true">style.css</file>
 
-    <file preprocess="xml-stripblanks">flashcards-window.ui</file>
-    <file preprocess="xml-stripblanks">flashcards-welcome.ui</file>
-    <file preprocess="xml-stripblanks">flashcards-decks.ui</file>
+    <file preprocess="xml-stripblanks">window.ui</file>
+    <file preprocess="xml-stripblanks">welcome.ui</file>
+    <file preprocess="xml-stripblanks">decks.ui</file>
     <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
   </gresource>
 </gresources>
