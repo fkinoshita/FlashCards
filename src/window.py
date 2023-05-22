@@ -83,6 +83,7 @@ class FlashcardsWindow(Adw.ApplicationWindow):
 
             self.leaflet.set_visible_child(self.decks_page)
             self.decks_page.leaflet.set_visible_child(self.decks_page.edit_page)
+            self.decks_page.deck_name.grab_focus()
 
             return
 
