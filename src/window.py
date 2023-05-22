@@ -79,10 +79,13 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         if self.decks_model.props.n_items < 1:
             deck = Deck()
 
+            self.current_deck = deck
+
             self.decks_model.append(deck)
 
             self.leaflet.set_visible_child(self.decks_page)
             self.decks_page.leaflet.set_visible_child(self.decks_page.edit_page)
+            self.decks_page.deck_name.connect('changed', self.__on_deck_name_changed)
             self.decks_page.deck_name.grab_focus()
 
             return
