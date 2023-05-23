@@ -9,6 +9,7 @@
 <p align="center">
   <img src="/data/screenshots/preview.png" alt="Preview"/>
   <img src="/data/screenshots/list.png" alt="Decks List"/>
+  <img src="/data/screenshots/card.png" alt="Card Page"/>
 </p>
 
 Flash Cards is a simple flash cards app.
