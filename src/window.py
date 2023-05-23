@@ -188,7 +188,7 @@ class FlashcardsWindow(Adw.ApplicationWindow):
 
 
     def __on_show_answer_button_clicked(self, button):
-        if button.get_label() == _('Next'):
+        if button.get_label() == _('Next') or button.get_label() == _('Done'):
             self.current_deck.current_index += 1
 
             button.set_label(_('Show Answer'))
@@ -210,6 +210,9 @@ class FlashcardsWindow(Adw.ApplicationWindow):
                 child.set_visible(True)
 
             button.set_label(_('Next'))
+
+            if self.current_deck.current_index + 1 == self.current_deck.cards_model.props.n_items:
+                button.set_label(_('Done'))
 
 
     def __on_edit_deck_button_clicked(self, button, deck):
