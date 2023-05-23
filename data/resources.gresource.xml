@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/io/github/fkinoshita/FlashCards">
+    <file compressed="true">style.css</file>
+
+    <file preprocess="xml-stripblanks">about_dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/window.ui</file>
+    <file preprocess="xml-stripblanks">ui/welcome.ui</file>
+    <file preprocess="xml-stripblanks">ui/decks.ui</file>
+    <file preprocess="xml-stripblanks">ui/card_edit_page.ui</file>
+    <file preprocess="xml-stripblanks" alias="gtk/help-overlay.ui">ui/gtk/help-overlay.ui</file>
+  </gresource>
+</gresources>

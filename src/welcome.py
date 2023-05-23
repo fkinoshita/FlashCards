@@ -19,7 +19,7 @@
 
 from gi.repository import Adw, Gtk
 
-@Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/welcome.ui')
+@Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/welcome.ui')
 class FlashcardsWelcome(Gtk.Box):
     __gtype_name__ = 'FlashcardsWelcome'
 

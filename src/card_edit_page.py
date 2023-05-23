@@ -19,7 +19,7 @@
 
 from gi.repository import Adw, Gtk
 
-@Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/card_edit_page.ui')
+@Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/card_edit_page.ui')
 class FlashcardsCardEditPage(Adw.Window):
     __gtype_name__ = 'FlashcardsCardEditPage'
 

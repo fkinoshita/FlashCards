@@ -1,22 +1,4 @@
 #!@PYTHON@
-
-# flashcards.in
-#
-# Copyright 2023 Felipe Kinoshita
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
@@ -26,20 +8,23 @@ import locale
 import gettext
 
 VERSION = '@VERSION@'
-pkgdatadir = '@pkgdatadir@'
-localedir = '@localedir@'
+APP_ID = "@APPID@"
+GETTEXT_PACKAGE = "@GETTEXT_PACKAGE@"
+LOCALEDIR = "@LOCALE_DIR@"
+NAME = "@NAME@"
+PKGDATADIR = "@DATA_DIR@"
 
-sys.path.insert(1, pkgdatadir)
+sys.path.insert(1, PKGDATADIR)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-locale.bindtextdomain('flashcards', localedir)
+locale.bindtextdomain('flashcards', LOCALEDIR)
 locale.textdomain('flashcards')
-gettext.install('flashcards', localedir)
+gettext.install('flashcards', LOCALEDIR)
 
 if __name__ == '__main__':
     import gi
 
     from gi.repository import Gio
-    resource = Gio.Resource.load(os.path.join(pkgdatadir, 'flashcards.gresource'))
+    resource = Gio.Resource.load(os.path.join(PKGDATADIR, 'resources.gresource'))
     resource._register()
 
     from flashcards import main

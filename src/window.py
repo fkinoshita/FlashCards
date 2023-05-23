@@ -48,7 +48,7 @@ class Deck(GObject.Object):
         self.current_index = 0
 
 
-@Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/window.ui')
+@Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/window.ui')
 class FlashcardsWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'FlashcardsWindow'
 

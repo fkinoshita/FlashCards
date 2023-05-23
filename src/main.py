@@ -53,15 +53,13 @@ class FlashcardsApplication(Adw.Application):
 
     def on_about_action(self, widget, _):
         """Callback for the app.about action."""
-        about = Adw.AboutWindow(transient_for=self.props.active_window,
-                                application_name='Flash Cards',
-                                application_icon='io.github.fkinoshita.FlashCards',
-                                developer_name='Felipe Kinoshita',
-                                version='0.1.0',
-                                developers=['Felipe Kinoshita'],
-                                designers=['Tobias Bernard'],
-                                copyright='© 2023 Felipe Kinoshita')
-        about.present()
+        builder = Gtk.Builder.new_from_resource(
+            "/io/github/fkinoshita/FlashCards/about_dialog.ui"
+        )
+        about_dialog = builder.get_object("about_dialog")
+        about_dialog.set_transient_for(self.props.active_window)
+        about_dialog.present()
+
 
 
     def on_preferences_action(self, widget, _):

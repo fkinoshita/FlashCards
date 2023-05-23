@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=flashcards
-Exec=flashcards
-Icon=io.github.fkinoshita.FlashCards
-Terminal=false
-Type=Application
-Categories=GTK;
-StartupNotify=true
