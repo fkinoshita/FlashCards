@@ -24,3 +24,8 @@
   background: linear-gradient(to top, alpha(@shade_color, .75), transparent 4px);
 }
 
+.card-text {
+  font-weight: 700;
+  font-size: 30pt;
+}
+

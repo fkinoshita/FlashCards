@@ -38,18 +38,21 @@ class Deck(GObject.Object):
 
     name = GObject.Property(type=str)
     cards_model = GObject.Property(type=Gio.ListStore)
+    current_index = GObject.Property(type=int)
 
     def __init__(self, **kargs):
         super().__init__(**kargs)
 
         self.name = _('New Deck')
         self.cards_model = Gio.ListStore.new(Card)
+        self.current_index = 0
 
 
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/window.ui')
 class FlashcardsWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'FlashcardsWindow'
 
+    toast_overlay = Gtk.Template.Child()
     leaflet = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
@@ -75,6 +78,7 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         self.welcome_page.start_button.connect('clicked', self.__on_start_button_clicked)
         self.decks_page.new_deck_button.connect('clicked', self.__on_new_deck_button_clicked)
         self.decks_page.new_card_button.connect('clicked', self.__on_new_card_button_clicked)
+        self.decks_page.show_answer_button.connect('clicked', self.__on_show_answer_button_clicked)
 
 
     def __on_start_button_clicked(self, button):
@@ -170,7 +174,40 @@ class FlashcardsWindow(Adw.ApplicationWindow):
     def __on_deck_activated(self, row):
         # go to cards page
 
+        if self.current_deck.cards_model.props.n_items == 0:
+            toast = Adw.Toast(title=_('No cards in deck'))
+            self.toast_overlay.add_toast(toast)
+            return
+
+        self.decks_page.front_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].front)
+        self.decks_page.back_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].back)
+
         self.decks_page.leaflet.set_visible_child(self.decks_page.card_page)
+
+
+    def __on_show_answer_button_clicked(self, button):
+        if button.get_label() == _('Next'):
+            self.current_deck.current_index += 1
+
+            button.set_label(_('Show Answer'))
+
+            for child in self.decks_page.card_box.observe_children():
+                child.set_visible(False)
+
+            self.decks_page.front_label.set_visible(True)
+
+            if self.current_deck.current_index + 1 > self.current_deck.cards_model.props.n_items:
+                self.current_deck.current_index = 0
+                self.decks_page.leaflet.set_visible_child(self.decks_page.list_page)
+                return
+
+            self.decks_page.front_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].front)
+            self.decks_page.back_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].back)
+        else:
+            for child in self.decks_page.card_box.observe_children():
+                child.set_visible(True)
+
+            button.set_label(_('Next'))
 
 
     def __on_edit_deck_button_clicked(self, button, deck):
