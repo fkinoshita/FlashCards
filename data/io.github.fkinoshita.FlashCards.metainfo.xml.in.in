@@ -1,9 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
+  <!-- Copyright 2023 Felipe Kinoshita -->
 <component type="desktop">
-	<id>io.github.fkinoshita.FlashCards.desktop</id>
+	<id>@APPID@</id>
+  <launchable type="desktop-id">@APPID@.desktop</launchable>
+  <name translatable="no">@NAME@</name>
+  <developer_name translatable="no">Felipe Kinoshita</developer_name>
+  <update_contact>kinofhek@gmail.com</update_contact>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
+  <summary>Learn with cards</summary>
+  <translation type="gettext">@APPID@</translation>
 	<description>
-	  <p>No description</p>
+	  <p>
+	    Flash Cards is a simple flash cards app, it makes it easy to create decks
+	    for learning new languages, new subjects or anything you want to get better at.
+	  </p>
 	</description>
+  <requires>
+    <display_length compare="ge">350</display_length>
+  </requires>
+  <recommends>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </recommends>
+  <url type="homepage">@PACKAGE_URL@</url>
+  <url type="bugtracker">@ISSUE_URL@</url>
+  <url type="donation">https://ko-fi.com/fkinoshita</url>
+  <screenshots>
+    <screenshot type="default">
+      <image>
+        https://raw.githubusercontent.com/fkinoshita/FlashCards/main/data/screenshots/preview.png
+      </image>
+    </screenshot>
+    <screenshot>
+      <image>
+        https://raw.githubusercontent.com/fkinoshita/FlashCards/main/data/screenshots/list.png
+      </image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1" />
+  <kudos>
+    <kudo>HiDpiIcon</kudo>
+    <kudo>HighContrast</kudo>
+    <kudo>ModernToolkit</kudo>
+  </kudos>
+  <custom>
+    <value key="Purism::form_factor">workstation</value>
+    <value key="Purism::form_factor">mobile</value>
+  </custom>
 </component>
