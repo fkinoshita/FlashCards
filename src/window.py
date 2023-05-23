@@ -110,7 +110,9 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         self.decks_page.deck_name.set_text(self.current_deck.name)
 
         self.decks_page.deck_name.connect('changed', self.__on_deck_name_changed)
-        self.decks_page.deck_name.grab_focus()
+
+        if is_new:
+            self.decks_page.deck_name.grab_focus()
 
         self.leaflet.set_visible_child(self.decks_page)
         self.decks_page.leaflet.set_visible_child(self.decks_page.edit_page)
