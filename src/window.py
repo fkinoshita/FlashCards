@@ -21,7 +21,7 @@ from gi.repository import Adw, Gtk, Gio, GObject
 
 from .welcome import FlashcardsWelcome
 from .decks import FlashcardsDecks
-from .card_edit_page import FlashcardsCardEditPage
+from .card_edit_view import FlashcardsCardEditView
 
 class Card(GObject.Object):
     __gtype_name__ = 'Card'
@@ -135,12 +135,7 @@ class FlashcardsWindow(Adw.ApplicationWindow):
 
         self.current_deck.cards_model.append(card)
 
-        card_edit_page = FlashcardsCardEditPage(self,
-                                                card,
-                                                transient_for=self,
-                                                modal=True)
-
-        card_edit_page.present()
+        self._show_card_edit_dialog(card)
 
 
     def __decks_list_create_row(self, deck):
@@ -254,11 +249,26 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         return row
     
 
-    def __on_edit_card_button_clicked(self, button, card):
-        card_edit_page = FlashcardsCardEditPage(self,
-                                                card,
-                                                transient_for=self,
-                                                modal=True)
+    def __on_edit_card_button_clicked(self, _button, card):
+        self._show_card_edit_dialog(card)
 
-        card_edit_page.present()
+
+    def _show_card_edit_dialog(self, card):
+        dialog = Adw.Window(transient_for=self,
+                            modal=True)
+        dialog.set_size_request(420, 420)
+
+        view = Adw.ToolbarView()
+
+        top = Adw.HeaderBar()
+        title = Adw.WindowTitle(title=_('Edit Card'))
+        top.set_title_widget(title)
+        view.add_top_bar(top)
+
+        card_edit_view = FlashcardsCardEditView(self, card)
+        view.set_content(card_edit_view)
+
+        dialog.set_content(view)
+
+        dialog.present()
 

@@ -26,7 +26,7 @@ flashcards_sources = [
   'window.py',
   'welcome.py',
   'decks.py',
-  'card_edit_page.py'
+  'card_edit_view.py'
 ]
 
 install_data(flashcards_sources, install_dir: moduledir)

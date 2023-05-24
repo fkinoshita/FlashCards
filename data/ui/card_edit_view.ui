@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="FlashcardsCardEditView" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="hexpand">true</property>
+    <property name="vexpand">true</property>
+    <property name="margin-top">12</property>
+    <property name="margin-bottom">24</property>
+    <property name="margin-start">24</property>
+    <property name="margin-end">24</property>
+    <property name="spacing">12</property>
+
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Front Side</property>
+
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="hexpand">true</property>
+            <property name="vexpand">true</property>
+
+            <style>
+              <class name="card"/>
+              <class name="text-box"/>
+            </style>
+
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">0</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+
+                <style>
+                  <class name="scrolled-window"/>
+                </style>
+
+                <child>
+                  <object class="GtkTextView" id="front_side_view">
+                    <property name="wrap-mode">GTK_WRAP_WORD_CHAR</property>
+                    <property name="hexpand">true</property>
+                    <property name="vexpand">true</property>
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+      </object>
+    </child>
+
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Back Side</property>
+
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="hexpand">true</property>
+            <property name="vexpand">true</property>
+
+            <style>
+              <class name="card"/>
+              <class name="text-box"/>
+            </style>
+
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">0</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+
+                <style>
+                  <class name="scrolled-window"/>
+                </style>
+
+                <child>
+                  <object class="GtkTextView" id="back_side_view">
+                    <property name="wrap-mode">GTK_WRAP_WORD_CHAR</property>
+                    <property name="hexpand">true</property>
+                    <property name="vexpand">true</property>
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+      </object>
+    </child>
+
+  </template>
+
+</interface>

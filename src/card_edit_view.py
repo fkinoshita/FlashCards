@@ -19,9 +19,9 @@
 
 from gi.repository import Adw, Gtk
 
-@Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/card_edit_page.ui')
-class FlashcardsCardEditPage(Adw.Window):
-    __gtype_name__ = 'FlashcardsCardEditPage'
+@Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/card_edit_view.ui')
+class FlashcardsCardEditView(Gtk.Box):
+    __gtype_name__ = 'FlashcardsCardEditView'
 
     front_side_view = Gtk.Template.Child()
     back_side_view = Gtk.Template.Child()
