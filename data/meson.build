@@ -1,5 +1,18 @@
 message('compiling resources')
 
+blueprints = custom_target('blueprints',
+  input: files(
+    'ui/window.blp',
+    'ui/welcome.blp',
+    'ui/list_view.blp',
+    'ui/deck_view.blp',
+    'ui/card_view.blp',
+    'ui/card_edit_view.blp',
+  ),
+  output: '.',
+  command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
+)
+
 about_conf = configuration_data()
 about_conf.set('PACKAGE_URL', package_url)
 about_conf.set('ISSUE_URL', issue_url)
@@ -17,11 +30,14 @@ gnome.compile_resources(
   source_dir: meson.current_build_dir(),
   install_dir: DATA_DIR,
   install: true,
-  dependencies: configure_file (
-    input: 'about_dialog.ui.in',
-    output: '@BASENAME@',
-    configuration: about_conf
-  )
+  dependencies: [
+    configure_file (
+      input: 'about_dialog.ui.in',
+      output: '@BASENAME@',
+      configuration: about_conf
+    ),
+    blueprints
+  ]
 )
 
 gschema_conf = configuration_data()

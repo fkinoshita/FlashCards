@@ -1,0 +1,90 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ListView : Gtk.Box {
+  Adw.ToolbarView {
+
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: _("Decks");
+      };
+
+      [end]
+      Gtk.MenuButton {
+        menu-model: primary_menu;
+        tooltip-text: _("Main Menu");
+        icon-name: "open-menu-symbolic";
+        primary: true;
+      }
+    }
+
+    content: Adw.Bin {
+      child: Gtk.Overlay {
+        vexpand: true;
+
+        child: Gtk.ScrolledWindow {
+          child: Gtk.Box {
+            orientation: vertical;
+            hexpand: true;
+            vexpand: true;
+            valign: start;
+            margin-top: 18;
+            margin-bottom: 30;
+            margin-start: 18;
+            margin-end: 18;
+
+            Adw.Clamp {
+              maximum-size: 400;
+              tightening-threshold: 300;
+
+              Gtk.Box {
+                orientation: vertical;
+                valign: center;
+                spacing: 12;
+
+                Gtk.ListBox decks_list {
+                  selection-mode: none;
+                }
+              }
+            }
+          };
+        };
+
+        [overlay]
+        Gtk.Button new_deck_button {
+          halign: center;
+          valign: end;
+
+          styles ["suggested-action", "pill", "new-deck-button"]
+
+          layout {
+            measure: true;
+            clip-overlay: true;
+          }
+
+          Adw.ButtonContent {
+            label: _("Add Deck");
+            icon-name: "list-add-symbolic";
+          }
+        }
+      };
+    };
+  }
+}
+
+menu primary_menu {
+  section {
+
+    item {
+      label: _("_Keyboard Shortcuts");
+      action: "win.show-help-overlay";
+    }
+
+    item {
+      label: _("_About Flash Cards");
+      action: "app.about";
+    }
+
+  }
+}

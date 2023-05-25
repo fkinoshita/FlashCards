@@ -19,9 +19,12 @@
 
 from gi.repository import Adw, Gtk, Gio, GObject
 
-from .welcome import FlashcardsWelcome
-from .decks import FlashcardsDecks
-from .card_edit_view import FlashcardsCardEditView
+from .welcome import Welcome
+from .list_view import ListView
+from .deck_view import DeckView
+from .card_view import CardView
+# from .decks import FlashcardsDecks
+from .card_edit_view import CardEditView
 
 class Card(GObject.Object):
     __gtype_name__ = 'Card'
@@ -49,8 +52,8 @@ class Deck(GObject.Object):
 
 
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/window.ui')
-class FlashcardsWindow(Adw.ApplicationWindow):
-    __gtype_name__ = 'FlashcardsWindow'
+class Window(Adw.ApplicationWindow):
+    __gtype_name__ = 'Window'
 
     toast_overlay = Gtk.Template.Child()
     leaflet = Gtk.Template.Child()
@@ -61,86 +64,35 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         self.decks_model = Gio.ListStore.new(Deck)
         self.current_deck = None
 
-        self.welcome_page = FlashcardsWelcome()
-        self.decks_page = FlashcardsDecks()
+        self.welcome_page = Welcome()
 
-        self.decks_page.decks_list.bind_model(self.decks_model, self.__decks_list_create_row)
+        self.app_view = Gtk.Box()
+
+        self.list_view = ListView()
+        self.list_view.decks_list.bind_model(self.decks_model, self.__decks_list_create_row)
+        self.deck_view = DeckView()
+        self.card_view = CardView()
+
+        leaflet = Adw.Leaflet()
+        leaflet.set_can_unfold(False)
+
+        leaflet.append(self.list_view)
+        leaflet.append(self.deck_view)
+        leaflet.append(self.card_view)
+
+        leaflet.set_can_navigate_back(True)
+
+        self.app_view.append(leaflet)
 
         self._setup_signals()
 
         self.leaflet.append(self.welcome_page)
-        self.leaflet.append(self.decks_page)
-
-
-    def _setup_signals(self):
-        self.decks_model.connect('items-changed', lambda *_: self.decks_page.decks_list.bind_model(self.decks_model, self.__decks_list_create_row))
-
-        self.welcome_page.start_button.connect('clicked', self.__on_start_button_clicked)
-        self.decks_page.new_deck_button.connect('clicked', self.__on_new_deck_button_clicked)
-        self.decks_page.new_card_button.connect('clicked', self.__on_new_card_button_clicked)
-        self.decks_page.show_answer_button.connect('clicked', self.__on_show_answer_button_clicked)
-
-
-    def __on_start_button_clicked(self, button):
-        if self.decks_model.props.n_items < 1:
-            deck = Deck()
-
-            self.current_deck = deck
-            self._go_to_deck(True)
-            self.decks_model.append(deck)
-
-            return
-
-        self.leaflet.set_visible_child(self.decks_page)
-
-
-    def _go_to_deck(self, is_new: bool):
-        if self.current_deck.cards_model.props.n_items < 1:
-            self.decks_page.cards_list.remove_css_class('boxed-list')
-
-        self.decks_page.cards_list.bind_model(self.current_deck.cards_model, self.cards_list_create_row)
-
-        title = ''
-        if is_new:
-            title = _('Create Deck')
-        else:
-            title = _('Edit Deck')
-
-        self.decks_page.edit_page_title.set_title(title);
-        self.decks_page.deck_name.set_text(self.current_deck.name)
-
-        self.decks_page.deck_name.connect('changed', self.__on_deck_name_changed)
-
-        if is_new:
-            self.decks_page.deck_name.grab_focus()
-
-        self.leaflet.set_visible_child(self.decks_page)
-        self.decks_page.leaflet.set_visible_child(self.decks_page.edit_page)
-
-
-    def __on_new_deck_button_clicked(self, button):
-        deck = Deck()
-
-        self.current_deck = deck
-
-        self._go_to_deck(True)
-
-        self.decks_model.append(deck)
-
-
-    def __on_new_card_button_clicked(self, button):
-        card = Card()
-        card.front = _('')
-        card.back = _('')
-
-        self.current_deck.cards_model.append(card)
-
-        self._show_card_edit_dialog(card)
+        self.leaflet.append(self.app_view)
 
 
     def __decks_list_create_row(self, deck):
-        if not self.decks_page.decks_list.has_css_class('boxed-list'):
-            self.decks_page.decks_list.add_css_class('boxed-list')
+        if not self.list_view.decks_list.has_css_class('boxed-list'):
+            self.list_view.decks_list.add_css_class('boxed-list')
 
         row = Adw.ActionRow()
         row.set_title_lines(1)
@@ -168,65 +120,9 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         return row
 
 
-    def __on_deck_activated(self, row):
-        # go to cards page
-
-        if self.current_deck.cards_model.props.n_items == 0:
-            toast = Adw.Toast(title=_('No cards in deck'))
-            self.toast_overlay.add_toast(toast)
-            return
-
-        self.decks_page.front_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].front)
-        self.decks_page.back_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].back)
-
-        self.decks_page.leaflet.set_visible_child(self.decks_page.card_page)
-
-
-    def __on_show_answer_button_clicked(self, button):
-        if button.get_label() == _('Next') or button.get_label() == _('Done'):
-            self.current_deck.current_index += 1
-
-            button.set_label(_('Show Answer'))
-
-            for child in self.decks_page.card_box.observe_children():
-                child.set_visible(False)
-
-            self.decks_page.front_label.set_visible(True)
-
-            if self.current_deck.current_index + 1 > self.current_deck.cards_model.props.n_items:
-                self.current_deck.current_index = 0
-                self.decks_page.leaflet.set_visible_child(self.decks_page.list_page)
-                return
-
-            self.decks_page.front_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].front)
-            self.decks_page.back_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].back)
-        else:
-            for child in self.decks_page.card_box.observe_children():
-                child.set_visible(True)
-
-            button.set_label(_('Next'))
-
-            if self.current_deck.current_index + 1 == self.current_deck.cards_model.props.n_items:
-                button.set_label(_('Done'))
-
-
-    def __on_edit_deck_button_clicked(self, button, deck):
-        # go to edit page
-
-        self.current_deck = deck
-
-        self._go_to_deck(False)
-
-
-    def __on_deck_name_changed(self, entry):
-        self.current_deck.name = entry.get_text()
-
-        self.decks_model.emit('items-changed', 0, 0, 0)
-
-
     def cards_list_create_row(self, card):
-        if not self.decks_page.cards_list.has_css_class('boxed-list'):
-            self.decks_page.cards_list.add_css_class('boxed-list')
+        if not self.deck_view.cards_list.has_css_class('boxed-list'):
+            self.deck_view.cards_list.add_css_class('boxed-list')
 
         row = Adw.ActionRow()
         row.set_title_lines(1)
@@ -247,10 +143,130 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         row.add_suffix(suffix)
 
         return row
-    
+
+
+    def __on_start_button_clicked(self, button):
+        self.leaflet.set_visible_child(self.app_view)
+
+        if self.decks_model.props.n_items < 1:
+            deck = Deck()
+
+            self.current_deck = deck
+            self._go_to_deck(True)
+            self.decks_model.append(deck)
+
+            return
+
+
+    def __on_new_deck_button_clicked(self, button):
+        deck = Deck()
+        self.current_deck = deck
+        self._go_to_deck(True)
+        self.decks_model.append(deck)
+
+
+    def __on_deck_activated(self, row):
+        if self.current_deck.cards_model.props.n_items == 0:
+            toast = Adw.Toast(title=_('No cards in deck'))
+            self.toast_overlay.add_toast(toast)
+            return
+
+        self.card_view.front_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].front)
+        self.card_view.back_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].back)
+
+        self.app_view.get_first_child().reorder_child_after(self.deck_view, self.card_view)
+        self.app_view.get_first_child().set_visible_child(self.card_view)
+
+
+    def __on_edit_deck_button_clicked(self, button, deck):
+        self.current_deck = deck
+        self._go_to_deck(False)
+
 
     def __on_edit_card_button_clicked(self, _button, card):
         self._show_card_edit_dialog(card)
+
+
+    def __on_new_card_button_clicked(self, button):
+        card = Card()
+        card.front = _('')
+        card.back = _('')
+
+        self.current_deck.cards_model.append(card)
+        self._show_card_edit_dialog(card)
+
+
+    def __on_deck_name_changed(self, entry):
+        self.current_deck.name = entry.get_text()
+
+        self.decks_model.emit('items-changed', 0, 0, 0)
+
+
+    def __on_show_answer_button_clicked(self, button):
+        if button.get_label() == _('Next') or button.get_label() == _('Done'):
+            self.current_deck.current_index += 1
+
+            button.set_label(_('Show Answer'))
+
+            for child in self.card_view.card_box.observe_children():
+                child.set_visible(False)
+
+            self.card_view.front_label.set_visible(True)
+
+            if self.current_deck.current_index + 1 > self.current_deck.cards_model.props.n_items:
+                self.current_deck.current_index = 0
+                self.app_view.get_first_child().set_visible_child(self.list_view)
+                return
+
+            self.card_view.front_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].front)
+            self.card_view.back_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].back)
+        else:
+            for child in self.card_view.card_box.observe_children():
+                child.set_visible(True)
+
+            button.set_label(_('Next'))
+
+            if self.current_deck.current_index + 1 == self.current_deck.cards_model.props.n_items:
+                button.set_label(_('Done'))
+
+
+    def __on_back_button(self, button):
+        self.app_view.get_first_child().set_visible_child(self.list_view)
+
+
+    def _setup_signals(self):
+        self.decks_model.connect('items-changed', lambda *_: self.list_view.decks_list.bind_model(self.decks_model, self.__decks_list_create_row))
+
+        self.welcome_page.start_button.connect('clicked', self.__on_start_button_clicked)
+        self.list_view.new_deck_button.connect('clicked', self.__on_new_deck_button_clicked)
+        self.deck_view.new_card_button.connect('clicked', self.__on_new_card_button_clicked)
+        self.card_view.show_answer_button.connect('clicked', self.__on_show_answer_button_clicked)
+
+        self.deck_view.back_button.connect('clicked', self.__on_back_button)
+        self.card_view.back_button.connect('clicked', self.__on_back_button)
+
+
+    def _go_to_deck(self, is_new: bool):
+        if self.current_deck.cards_model.props.n_items < 1:
+            self.deck_view.cards_list.remove_css_class('boxed-list')
+
+        self.deck_view.cards_list.bind_model(self.current_deck.cards_model, self.cards_list_create_row)
+
+        title = ''
+        if is_new:
+            title = _('Create Deck')
+        else:
+            title = _('Edit Deck')
+
+        self.deck_view.page_title.set_title(title);
+        self.deck_view.name_entry.set_text(self.current_deck.name)
+        self.deck_view.name_entry.connect('changed', self.__on_deck_name_changed)
+
+        if is_new:
+            self.deck_view.name_entry.grab_focus()
+
+        self.app_view.get_first_child().reorder_child_after(self.card_view, self.deck_view)
+        self.app_view.get_first_child().set_visible_child(self.deck_view)
 
 
     def _show_card_edit_dialog(self, card):
@@ -265,10 +281,11 @@ class FlashcardsWindow(Adw.ApplicationWindow):
         top.set_title_widget(title)
         view.add_top_bar(top)
 
-        card_edit_view = FlashcardsCardEditView(self, card)
+        card_edit_view = CardEditView(self, card)
         view.set_content(card_edit_view)
 
         dialog.set_content(view)
 
         dialog.present()
+
 

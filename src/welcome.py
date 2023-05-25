@@ -20,8 +20,8 @@
 from gi.repository import Adw, Gtk
 
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/welcome.ui')
-class FlashcardsWelcome(Gtk.Box):
-    __gtype_name__ = 'FlashcardsWelcome'
+class Welcome(Gtk.Box):
+    __gtype_name__ = 'Welcome'
 
     start_button = Gtk.Template.Child()
 

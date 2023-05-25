@@ -32,16 +32,16 @@ class FlashcardsDecks(Gtk.Box):
     decks_list = Gtk.Template.Child()
     new_deck_button = Gtk.Template.Child()
 
-    edit_page_title = Gtk.Template.Child()
-    deck_image = Gtk.Template.Child()
-    deck_name = Gtk.Template.Child()
-    cards_list = Gtk.Template.Child()
-    new_card_button = Gtk.Template.Child()
+    # edit_page_title = Gtk.Template.Child()
+    # deck_image = Gtk.Template.Child()
+    # deck_name = Gtk.Template.Child()
+    # cards_list = Gtk.Template.Child()
+    # new_card_button = Gtk.Template.Child()
 
-    card_box = Gtk.Template.Child()
-    front_label = Gtk.Template.Child()
-    back_label = Gtk.Template.Child()
-    show_answer_button = Gtk.Template.Child()
+    # card_box = Gtk.Template.Child()
+    # front_label = Gtk.Template.Child()
+    # back_label = Gtk.Template.Child()
+    # show_answer_button = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

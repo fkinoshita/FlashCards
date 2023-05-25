@@ -25,7 +25,9 @@ flashcards_sources = [
   'main.py',
   'window.py',
   'welcome.py',
-  'decks.py',
+  'list_view.py',
+  'deck_view.py',
+  'card_view.py',
   'card_edit_view.py'
 ]
 

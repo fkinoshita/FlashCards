@@ -20,8 +20,8 @@
 from gi.repository import Adw, Gtk
 
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/card_edit_view.ui')
-class FlashcardsCardEditView(Gtk.Box):
-    __gtype_name__ = 'FlashcardsCardEditView'
+class CardEditView(Gtk.Box):
+    __gtype_name__ = 'CardEditView'
 
     front_side_view = Gtk.Template.Child()
     back_side_view = Gtk.Template.Child()
@@ -44,7 +44,7 @@ class FlashcardsCardEditView(Gtk.Box):
         text = buffer.get_text(start, end, False)
         self.card.front = text
 
-        self.window.decks_page.cards_list.bind_model(self.window.current_deck.cards_model, self.window.cards_list_create_row)
+        self.window.deck_view.cards_list.bind_model(self.window.current_deck.cards_model, self.window.cards_list_create_row)
 
 
     def __on_back_side_changed(self, buffer):

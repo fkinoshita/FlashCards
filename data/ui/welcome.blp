@@ -1,0 +1,57 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $Welcome : Gtk.Box {
+  orientation: vertical;
+
+  Adw.HeaderBar {
+    title-widget: Adw.WindowTitle {
+      title: "";
+    };
+
+    styles ["flat"]
+
+    [end]
+    Gtk.MenuButton {
+      menu-model: primary_menu;
+      tooltip-text: _("Main Menu");
+      icon-name: "open-menu-symbolic";
+      primary: true;
+    }
+  }
+
+  Gtk.Box {
+    Adw.StatusPage {
+      title: _("Flash Cards");
+      description: _("Get started with your first deck");
+      icon-name: "io.github.fkinoshita.FlashCards";
+      hexpand: true;
+      vexpand: true;
+
+      styles ["icon-dropshadow"]
+
+      Gtk.Button start_button {
+        label: _("Create Deck");
+        halign: center;
+
+        styles ["suggested-action", "pill"]
+      }
+    }
+  }
+}
+
+menu primary_menu {
+  section {
+
+    item {
+      label: _("_Keyboard Shortcuts");
+      action: "win.show-help-overlay";
+    }
+
+    item {
+      label: _("_About Flash Cards");
+      action: "app.about";
+    }
+
+  }
+}

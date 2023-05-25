@@ -24,7 +24,7 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
 from gi.repository import Adw, Gtk, Gio
-from .window import FlashcardsWindow
+from .window import Window
 
 
 class FlashcardsApplication(Adw.Application):
@@ -47,7 +47,7 @@ class FlashcardsApplication(Adw.Application):
         """
         win = self.props.active_window
         if not win:
-            win = FlashcardsWindow(application=self)
+            win = Window(application=self)
         win.present()
 
 
