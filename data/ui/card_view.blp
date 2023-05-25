@@ -36,11 +36,16 @@ template $CardView : Gtk.Box {
         vexpand: true;
         halign: center;
         valign: center;
+        margin-start: 18;
+        margin-end: 18;
         margin-bottom: 72;
         spacing: 24;
 
         Gtk.Label front_label {
           label: "Lorem ipsum";
+          wrap: true;
+          wrap-mode: word_char;
+          justify: center;
 
           styles ["card-text"]
         }
@@ -53,6 +58,9 @@ template $CardView : Gtk.Box {
         Gtk.Label back_label {
           visible: false;
           label: "Lorem ipsum";
+          wrap: true;
+          wrap-mode: word_char;
+          justify: center;
 
           styles ["card-text"]
         }
