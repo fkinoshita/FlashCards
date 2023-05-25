@@ -29,3 +29,10 @@
   font-size: 30pt;
 }
 
+.emoji-icon {
+  background-color: @light_3;
+  border-radius: 9999px;
+  padding: 16px;
+  font-size: 5rem;
+}
+

@@ -40,6 +40,7 @@ class Deck(GObject.Object):
     __gtype_name__ = 'Deck'
 
     name = GObject.Property(type=str)
+    icon = GObject.Property(type=str)
     cards_model = GObject.Property(type=Gio.ListStore)
     current_index = GObject.Property(type=int)
 
@@ -47,6 +48,7 @@ class Deck(GObject.Object):
         super().__init__(**kargs)
 
         self.name = _('New Deck')
+        self.icon = '🍕️'
         self.cards_model = Gio.ListStore.new(Card)
         self.current_index = 0
 
@@ -98,6 +100,13 @@ class Window(Adw.ApplicationWindow):
         row.set_title_lines(1)
         row.set_title(deck.name)
         row.set_activatable(True)
+
+        prefix = Gtk.Box()
+        prefix.set_valign(Gtk.Align.CENTER)
+        deck_icon = Gtk.Label(label=deck.icon)
+        deck_icon.add_css_class('title-1')
+        prefix.append(deck_icon)
+        row.add_prefix(prefix)
 
         suffix = Gtk.Box()
         suffix.set_spacing(12)
@@ -233,6 +242,12 @@ class Window(Adw.ApplicationWindow):
         self.app_view.get_first_child().set_visible_child(self.list_view)
 
 
+    def __on_emoji_picked(self, emoji_chooser, emoji_text):
+        self.current_deck.icon = emoji_text
+        self.deck_view.deck_icon.set_label(self.current_deck.icon)
+        self.decks_model.emit('items-changed', 0, 0, 0)
+
+
     def _setup_signals(self):
         self.decks_model.connect('items-changed', lambda *_: self.list_view.decks_list.bind_model(self.decks_model, self.__decks_list_create_row))
 
@@ -243,6 +258,8 @@ class Window(Adw.ApplicationWindow):
 
         self.deck_view.back_button.connect('clicked', self.__on_back_button)
         self.card_view.back_button.connect('clicked', self.__on_back_button)
+
+        self.deck_view.emoji_chooser.connect('emoji-picked', self.__on_emoji_picked)
 
 
     def _go_to_deck(self, is_new: bool):
@@ -259,6 +276,7 @@ class Window(Adw.ApplicationWindow):
 
         self.deck_view.page_title.set_title(title);
         self.deck_view.name_entry.set_text(self.current_deck.name)
+        self.deck_view.deck_icon.set_text(self.current_deck.icon)
         self.deck_view.name_entry.connect('changed', self.__on_deck_name_changed)
 
         if is_new:

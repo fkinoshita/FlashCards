@@ -7,6 +7,9 @@ class DeckView(Gtk.Box):
     __gtype_name__ = 'DeckView'
 
     back_button = Gtk.Template.Child()
+    deck_icon = Gtk.Template.Child()
+    edit_icon_button = Gtk.Template.Child()
+    emoji_chooser = Gtk.Template.Child()
     page_title = Gtk.Template.Child()
     name_entry = Gtk.Template.Child()
     cards_list = Gtk.Template.Child()

@@ -52,9 +52,10 @@ template $DeckView : Gtk.Box {
                 Gtk.Overlay {
                   halign: center;
 
-                  Adw.Avatar {
-                    show-initials: false;
-                    size: 120;
+                  Gtk.Label deck_icon {
+                    label: "";
+
+                    styles ["emoji-icon"]
                   }
 
                   [overlay]
@@ -64,7 +65,7 @@ template $DeckView : Gtk.Box {
 
                     styles ["cutout-button"]
 
-                    Gtk.Button {
+                    Gtk.MenuButton edit_icon_button {
                       icon-name: "document-edit-symbolic";
 
                       styles ["circular"]
@@ -72,6 +73,8 @@ template $DeckView : Gtk.Box {
                       accessibility {
                         label: _("Edit Deck Avatar");
                       }
+
+                      popover: Gtk.EmojiChooser emoji_chooser {};
                     }
                   }
                 }
