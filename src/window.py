@@ -167,8 +167,7 @@ class Window(Adw.ApplicationWindow):
 
     def __on_deck_activated(self, row):
         if self.current_deck.cards_model.props.n_items == 0:
-            toast = Adw.Toast(title=_('No cards in deck'))
-            self.toast_overlay.add_toast(toast)
+            self._go_to_deck(False)
             return
 
         self.card_view.front_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].front)
