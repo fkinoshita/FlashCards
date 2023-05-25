@@ -124,7 +124,7 @@ class Window(Adw.ApplicationWindow):
 
         row.add_suffix(suffix)
 
-        row.connect('activated', self.__on_deck_activated)
+        row.connect('activated', self.__on_deck_activated, deck)
 
         return row
 
@@ -175,7 +175,9 @@ class Window(Adw.ApplicationWindow):
         self.decks_model.append(deck)
 
 
-    def __on_deck_activated(self, row):
+    def __on_deck_activated(self, row, deck):
+        self.current_deck = deck
+
         if self.current_deck.cards_model.props.n_items == 0:
             self._go_to_deck(False)
             return
