@@ -23,7 +23,6 @@ from .welcome import Welcome
 from .list_view import ListView
 from .deck_view import DeckView
 from .card_view import CardView
-# from .decks import FlashcardsDecks
 from .card_edit_view import CardEditView
 
 class Card(GObject.Object):
