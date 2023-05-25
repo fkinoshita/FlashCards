@@ -30,7 +30,7 @@
 }
 
 .emoji-icon {
-  background-color: @light_3;
+  background-color: @card_shade_color;
   border-radius: 9999px;
   padding: 16px;
   font-size: 5rem;
