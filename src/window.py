@@ -147,6 +147,7 @@ class Window(Adw.ApplicationWindow):
         edit_button.add_css_class('circular')
         suffix.append(edit_button)
 
+        row.connect('activated', self.__on_edit_card_button_clicked, card)
         edit_button.connect('clicked', self.__on_edit_card_button_clicked, card)
 
         row.add_suffix(suffix)
