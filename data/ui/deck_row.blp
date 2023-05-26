@@ -1,0 +1,34 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DeckRow : Adw.ActionRow {
+  title_lines: 1;
+  activatable: true;
+
+  [prefix]
+  Gtk.Box {
+    valign: center;
+
+    Gtk.Label deck_icon {
+      label: "";
+
+      styles ["title-1"]
+    }
+  }
+
+  [suffix]
+  Gtk.Box {
+    valign: center;
+    spacing: 12;
+
+    Gtk.Button edit_button {
+      icon-name: "document-edit-symbolic";
+
+      styles ["circular"]
+    }
+
+    Gtk.Image {
+      icon-name: "go-next-symbolic";
+    }
+  }
+}
