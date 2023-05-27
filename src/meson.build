@@ -23,6 +23,7 @@ configure_file(
 flashcards_sources = [
   '__init__.py',
   'main.py',
+  'application.py',
   'window.py',
   'welcome.py',
   'list_view.py',
