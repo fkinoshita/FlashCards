@@ -1,0 +1,20 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $CardRow : Adw.ActionRow {
+  title_lines: 1;
+  activatable: true;
+
+  [suffix]
+  Gtk.Box {
+    valign: center;
+    spacing: 12;
+
+    Gtk.Button edit_button {
+      tooltip-text: _("Edit Card");
+      icon-name: "document-edit-symbolic";
+
+      styles ["circular"]
+    }
+  }
+}

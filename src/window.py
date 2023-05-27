@@ -8,6 +8,7 @@ from .deck_view import DeckView
 from .card_view import CardView
 from .card_edit_view import CardEditView
 from .deck_row import DeckRow
+from .card_row import CardRow
 
 class Card(GObject.Object):
     __gtype_name__ = 'Card'
@@ -90,24 +91,9 @@ class Window(Adw.ApplicationWindow):
         if not self.deck_view.cards_list.has_css_class('boxed-list'):
             self.deck_view.cards_list.add_css_class('boxed-list')
 
-        row = Adw.ActionRow()
-        row.set_title_lines(1)
-        row.set_title(card.front)
-        row.set_activatable(True)
-
-        suffix = Gtk.Box()
-        suffix.set_spacing(12)
-        suffix.set_valign(Gtk.Align.CENTER)
-
-        edit_button = Gtk.Button()
-        edit_button.set_icon_name('document-edit-symbolic')
-        edit_button.add_css_class('circular')
-        suffix.append(edit_button)
-
+        row = CardRow(card)
         row.connect('activated', self.__on_edit_card_button_clicked, card)
-        edit_button.connect('clicked', self.__on_edit_card_button_clicked, card)
-
-        row.add_suffix(suffix)
+        row.edit_button.connect('clicked', self.__on_edit_card_button_clicked, card)
 
         return row
 

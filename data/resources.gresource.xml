@@ -11,6 +11,7 @@
     <file preprocess="xml-stripblanks">ui/card_view.ui</file>
     <file preprocess="xml-stripblanks">ui/card_edit_view.ui</file>
     <file preprocess="xml-stripblanks">ui/deck_row.ui</file>
+    <file preprocess="xml-stripblanks">ui/card_row.ui</file>
     <file preprocess="xml-stripblanks" alias="gtk/help-overlay.ui">ui/gtk/help-overlay.ui</file>
   </gresource>
 </gresources>
