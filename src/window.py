@@ -31,8 +31,8 @@ class Deck(GObject.Object):
     def __init__(self, **kargs):
         super().__init__(**kargs)
 
-        self.name = _('New Deck')
-        self.icon = '🍕️'
+        self.name = _('')
+        self.icon = ''
         self.cards_model = Gio.ListStore.new(Card)
         self.current_index = 0
 
