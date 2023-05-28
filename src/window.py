@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import json
+
 from gi.repository import Adw, Gtk, Gio, GObject
 
 from .welcome import Welcome
@@ -9,6 +11,8 @@ from .card_view import CardView
 from .card_edit_view import CardEditView
 from .deck_row import DeckRow
 from .card_row import CardRow
+
+from . import shared
 
 class Card(GObject.Object):
     __gtype_name__ = 'Card'
@@ -28,13 +32,39 @@ class Deck(GObject.Object):
     cards_model = GObject.Property(type=Gio.ListStore)
     current_index = GObject.Property(type=int)
 
-    def __init__(self, **kargs):
+    def __init__(self, name = '', **kargs):
         super().__init__(**kargs)
 
-        self.name = _('')
+        self.name = name
         self.icon = ''
         self.cards_model = Gio.ListStore.new(Card)
         self.current_index = 0
+
+
+    def save(self):
+        shared.decks_dir.mkdir(parents=True, exist_ok=True)
+
+        cards = []
+
+        for c in self.cards_model:
+            card = {
+                'front': c.front,
+                'back': c.back,
+            }
+            cards.append(card)
+
+        deck = {
+            'name': self.name,
+            'icon': self.icon,
+            'cards': cards
+        }
+
+        json.dump(
+            deck,
+            (shared.decks_dir / f"{self.name}.json").open("w"),
+            indent=4,
+            sort_keys=True,
+        )
 
 
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/window.ui')
@@ -49,6 +79,26 @@ class Window(Adw.ApplicationWindow):
 
         self.decks_model = Gio.ListStore.new(Deck)
         self.current_deck = None
+
+        decks = []
+
+        if shared.decks_dir.is_dir():
+            for open_file in shared.decks_dir.iterdir():
+                data = json.load(open_file.open())
+                decks.append(data)
+
+        for d in decks:
+            deck = Deck(d['name'])
+            deck.icon = d['icon']
+
+            for c in d['cards']:
+                card = Card()
+                card.front = c['front']
+                card.back = c['back']
+
+                deck.cards_model.append(card)
+
+            self.decks_model.append(deck)
 
         self.welcome_page = Welcome()
 
@@ -72,7 +122,9 @@ class Window(Adw.ApplicationWindow):
 
         self._setup_signals()
 
-        self.leaflet.append(self.welcome_page)
+        if self.decks_model.props.n_items < 1:
+            self.leaflet.append(self.welcome_page)
+
         self.leaflet.append(self.app_view)
 
 
@@ -99,16 +151,13 @@ class Window(Adw.ApplicationWindow):
 
 
     def __on_start_button_clicked(self, button):
-        self.leaflet.set_visible_child(self.app_view)
+        deck = Deck()
 
-        if self.decks_model.props.n_items < 1:
-            deck = Deck()
+        self.current_deck = deck
+        self._go_to_deck(True)
+        self.decks_model.append(deck)
 
-            self.current_deck = deck
-            self._go_to_deck(True)
-            self.decks_model.append(deck)
-
-            return
+        return
 
 
     def __on_new_deck_button_clicked(self, button):
@@ -120,6 +169,7 @@ class Window(Adw.ApplicationWindow):
 
     def __on_deck_activated(self, row, deck):
         self.current_deck = deck
+        self.current_deck.save()
 
         if self.current_deck.cards_model.props.n_items == 0:
             self._go_to_deck(False)
@@ -209,6 +259,8 @@ class Window(Adw.ApplicationWindow):
 
 
     def _go_to_deck(self, is_new: bool):
+        self.leaflet.set_visible_child(self.app_view)
+
         if self.current_deck.cards_model.props.n_items < 1:
             self.deck_view.cards_list.remove_css_class('boxed-list')
 
