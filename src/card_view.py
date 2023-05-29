@@ -11,8 +11,8 @@ class CardView(Gtk.Box):
     front_label = Gtk.Template.Child()
     back_label = Gtk.Template.Child()
     show_answer_button = Gtk.Template.Child()
+    edit_button = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        

@@ -238,6 +238,11 @@ class Window(Adw.ApplicationWindow):
                 button.set_label(_('Done'))
 
 
+    def __on_card_edit_button_changed(self, button):
+        self._go_to_deck(False)
+        self._show_card_edit_dialog(self.current_deck.cards_model[self.current_deck.current_index])
+
+
     def __on_back_button(self, button):
         self.app_view.get_first_child().set_visible_child(self.list_view)
 
@@ -256,6 +261,7 @@ class Window(Adw.ApplicationWindow):
         self.list_view.new_deck_button.connect('clicked', self.__on_new_deck_button_clicked)
         self.deck_view.new_card_button.connect('clicked', self.__on_new_card_button_clicked)
         self.card_view.show_answer_button.connect('clicked', self.__on_show_answer_button_clicked)
+        self.card_view.edit_button.connect('clicked', self.__on_card_edit_button_changed)
 
         self.deck_view.back_button.connect('clicked', self.__on_back_button)
         self.card_view.back_button.connect('clicked', self.__on_back_button)
