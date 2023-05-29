@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
+import uuid
 
 from gi.repository import Adw, Gtk, Gio, GObject
 
@@ -35,6 +36,7 @@ class Deck(GObject.Object):
     def __init__(self, name = '', **kargs):
         super().__init__(**kargs)
 
+        self.id = str(uuid.uuid4().hex)
         self.name = name
         self.icon = ''
         self.cards_model = Gio.ListStore.new(Card)
@@ -54,6 +56,7 @@ class Deck(GObject.Object):
             cards.append(card)
 
         deck = {
+            'id': self.id,
             'name': self.name,
             'icon': self.icon,
             'cards': cards
@@ -61,7 +64,7 @@ class Deck(GObject.Object):
 
         json.dump(
             deck,
-            (shared.decks_dir / f"{self.name}.json").open("w"),
+            (shared.decks_dir / f"{self.id}.json").open("w"),
             indent=4,
             sort_keys=True,
         )
@@ -89,6 +92,7 @@ class Window(Adw.ApplicationWindow):
 
         for d in decks:
             deck = Deck(d['name'])
+            deck.id = d['id']
             deck.icon = d['icon']
 
             for c in d['cards']:
