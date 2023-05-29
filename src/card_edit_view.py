@@ -26,6 +26,7 @@ class CardEditView(Gtk.Box):
         (start, end) = buffer.get_bounds()
         text = buffer.get_text(start, end, False)
         self.card.front = text
+        self.window.current_deck.save()
 
         self.window.deck_view.cards_list.bind_model(self.window.current_deck.cards_model, self.window.cards_list_create_row)
 
@@ -34,4 +35,5 @@ class CardEditView(Gtk.Box):
         (start, end) = buffer.get_bounds()
         text = buffer.get_text(start, end, False)
         self.card.back = text
+        self.window.current_deck.save()
 

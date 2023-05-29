@@ -173,7 +173,6 @@ class Window(Adw.ApplicationWindow):
 
     def __on_deck_activated(self, row, deck):
         self.current_deck = deck
-        self.current_deck.save()
 
         if self.current_deck.cards_model.props.n_items == 0:
             self._go_to_deck(False)
@@ -206,6 +205,7 @@ class Window(Adw.ApplicationWindow):
 
     def __on_deck_name_changed(self, entry):
         self.current_deck.name = entry.get_text()
+        self.current_deck.save()
 
         self.decks_model.emit('items-changed', 0, 0, 0)
 
@@ -244,6 +244,7 @@ class Window(Adw.ApplicationWindow):
 
     def __on_emoji_picked(self, emoji_chooser, emoji_text):
         self.current_deck.icon = emoji_text
+        self.current_deck.save()
         self.deck_view.deck_icon.set_label(self.current_deck.icon)
         self.decks_model.emit('items-changed', 0, 0, 0)
 
