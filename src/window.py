@@ -196,8 +196,8 @@ class Window(Adw.ApplicationWindow):
 
     def __on_new_card_button_clicked(self, button):
         card = Card()
-        card.front = _('')
-        card.back = _('')
+        card.front = ''
+        card.back = ''
 
         self.current_deck.cards_model.append(card)
         self._show_card_edit_dialog(card)
