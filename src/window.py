@@ -298,7 +298,8 @@ class Window(Adw.ApplicationWindow):
     def _show_card_edit_dialog(self, card):
         dialog = Adw.Window(transient_for=self,
                             modal=True)
-        dialog.set_size_request(420, 420)
+        dialog.set_size_request(300, 300)
+        dialog.set_default_size(420, 420)
 
         view = Adw.ToolbarView()
 
