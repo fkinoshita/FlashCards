@@ -22,7 +22,7 @@ designers = '\n'.join([
   'Tobias Bernard https://tobiasbernard.com',
 ])
 artists = '\n'.join([
-  '',
+  'Tobias Bernard https://tobiasbernard.com',
 ])
 
 dependency('gtk4', version: '>=4.9')
