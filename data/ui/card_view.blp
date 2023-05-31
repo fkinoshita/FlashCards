@@ -67,27 +67,40 @@ template $CardView : Gtk.Box {
       };
 
       [overlay]
-      Gtk.Button show_answer_button {
-        label: _("Show Answer");
-        halign: center;
+      Gtk.Box {
+        hexpand: true;
+        vexpand: true;
         valign: end;
 
-        styles ["suggested-action", "pill", "new-deck-button"]
+        Gtk.Button edit_button {
+          tooltip-text: _("Edit Card");
+          icon-name: "document-edit-symbolic";
+          valign: center;
 
-        layout {
-          measure: true;
-          clip-overlay: true;
+          styles ["circular", "new-deck-button"]
         }
-      }
 
-      [overlay]
-      Gtk.Button edit_button {
-        tooltip-text: _("Edit Card");
-        icon-name: "document-edit-symbolic";
-        halign: start;
-        valign: end;
+        Gtk.Box {
+          hexpand: true;
+        }
 
-        styles ["circular", "new-deck-button"]
+        Gtk.Button show_answer_button {
+          label: _("Show Answer");
+          valign: center;
+
+          styles ["suggested-action", "pill", "new-deck-button"]
+        }
+
+        Gtk.Box {
+          hexpand: true;
+        }
+
+        Gtk.Button {
+          valign: center;
+          sensitive: false;
+
+          styles ["hidden", "new-deck-button"]
+        }
 
         layout {
           measure: true;

@@ -36,3 +36,8 @@
   font-size: 5rem;
 }
 
+.hidden {
+  color: transparent;
+  background-color: transparent;
+}
+
