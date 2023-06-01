@@ -89,6 +89,22 @@ template $DeckView : Gtk.Box {
 
                 Gtk.ListBox cards_list {
                   selection-mode: none;
+
+                  [placeholder]
+                  Gtk.Box {
+                    height-request: 180;
+
+                    styles ["card"]
+
+                    Adw.StatusPage {
+                      title: _("No Cards");
+                      description: _("This deck is empty");
+                      hexpand: true;
+                      vexpand: true;
+
+                      styles ["compact"]
+                    }
+                  }
                 }
               }
             }
