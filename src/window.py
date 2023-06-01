@@ -301,6 +301,11 @@ class Window(Adw.ApplicationWindow):
         dialog.set_size_request(300, 300)
         dialog.set_default_size(420, 420)
 
+        trigger = Gtk.ShortcutTrigger.parse_string("Escape");
+        close_action = Gtk.CallbackAction().new(lambda dialog, _: dialog.close())
+        shortcut = Gtk.Shortcut().new(trigger, close_action)
+        dialog.add_shortcut(shortcut)
+
         view = Adw.ToolbarView()
 
         top = Adw.HeaderBar()
