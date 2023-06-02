@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import os
 import json
 import uuid
 
@@ -139,6 +140,7 @@ class Window(Adw.ApplicationWindow):
         row = DeckRow(deck)
         row.edit_button.connect('clicked', self.__on_edit_deck_button_clicked, deck)
         row.connect('activated', self.__on_deck_activated, deck)
+        row.checkbox.connect('toggled', self.__on_deck_checkbox_toggled, row)
 
         return row
 
@@ -174,6 +176,9 @@ class Window(Adw.ApplicationWindow):
     def __on_deck_activated(self, row, deck):
         self.current_deck = deck
 
+        if not self.list_view.decks_list.get_selection_mode() == Gtk.SelectionMode.NONE:
+            return
+
         if self.current_deck.cards_model.props.n_items == 0:
             self._go_to_deck(False)
             return
@@ -188,6 +193,14 @@ class Window(Adw.ApplicationWindow):
     def __on_edit_deck_button_clicked(self, button, deck):
         self.current_deck = deck
         self._go_to_deck(False)
+
+
+    def __on_deck_checkbox_toggled(self, button, row):
+        if button.get_active():
+            self.list_view.decks_list.select_row(row)
+            return
+
+        self.list_view.decks_list.unselect_row(row)
 
 
     def __on_edit_card_button_clicked(self, _button, card):
@@ -254,11 +267,39 @@ class Window(Adw.ApplicationWindow):
         self.decks_model.emit('items-changed', 0, 0, 0)
 
 
+    def __on_deck_selection_mode_button_toggled(self, button):
+        if self.list_view.decks_list.get_selection_mode() == Gtk.SelectionMode.NONE:
+            self.list_view.decks_list.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
+            self.list_view.set_selection_mode(True)
+        else:
+            self.list_view.decks_list.set_selection_mode(Gtk.SelectionMode.NONE)
+            self.list_view.set_selection_mode(False)
+
+
+    def __on_deck_delete_button_clicked(self, button):
+        for row in self.list_view.decks_list.get_selected_rows():
+            found, position = self.decks_model.find(row.deck)
+            if found:
+                self.decks_model.remove(position)
+                os.remove(shared.decks_dir / f"{row.deck.id}.json")
+
+        self.list_view.set_selection_mode(False)
+        self.list_view.selection_mode_button.set_active(False)
+
+        if self.decks_model.props.n_items < 1:
+            deck = Deck()
+            self.current_deck = deck
+            self._go_to_deck(True)
+            self.decks_model.append(deck)
+
+
     def _setup_signals(self):
         self.decks_model.connect('items-changed', lambda *_: self.list_view.decks_list.bind_model(self.decks_model, self.__decks_list_create_row))
 
         self.welcome_page.start_button.connect('clicked', self.__on_start_button_clicked)
         self.list_view.new_deck_button.connect('clicked', self.__on_new_deck_button_clicked)
+        self.list_view.selection_mode_button.connect('toggled', self.__on_deck_selection_mode_button_toggled)
+        self.list_view.delete_button.connect('clicked', self.__on_deck_delete_button_clicked)
         self.deck_view.new_card_button.connect('clicked', self.__on_new_card_button_clicked)
         self.card_view.show_answer_button.connect('clicked', self.__on_show_answer_button_clicked)
         self.card_view.edit_button.connect('clicked', self.__on_card_edit_button_changed)

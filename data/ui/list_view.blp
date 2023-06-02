@@ -10,12 +10,27 @@ template $ListView : Gtk.Box {
         title: _("Decks");
       };
 
+      [start]
+      Gtk.Button delete_button {
+        visible: false;
+        tooltip-text: _("Delete Selection");
+        icon-name: "user-trash-symbolic";
+
+        styles ["destructive-action"]
+      }
+
       [end]
       Gtk.MenuButton {
         menu-model: primary_menu;
         tooltip-text: _("Main Menu");
         icon-name: "open-menu-symbolic";
         primary: true;
+      }
+
+      [end]
+      Gtk.ToggleButton selection_mode_button {
+        tooltip-text: _("Selection Mode");
+        icon-name: "selection-mode-symbolic";
       }
     }
 

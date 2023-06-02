@@ -9,6 +9,14 @@ template $DeckRow : Adw.ActionRow {
   Gtk.Box {
     valign: center;
 
+    Gtk.Revealer revealer {
+      transition-type: slide_right;
+
+      Gtk.CheckButton checkbox {
+        styles ["selection-mode"]
+      }
+    }
+
     Gtk.Label deck_icon {
       label: "";
 
@@ -27,7 +35,7 @@ template $DeckRow : Adw.ActionRow {
       styles ["circular"]
     }
 
-    Gtk.Image {
+    Gtk.Image next_icon {
       icon-name: "go-next-symbolic";
     }
   }
