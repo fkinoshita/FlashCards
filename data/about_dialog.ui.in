@@ -3,7 +3,7 @@
   <object class="AdwAboutWindow" id="about_dialog">
     <property name="version">@VERSION@</property>
     <property name="copyright">@COPYRIGHT@</property>
-    <property name="comments" translatable="yes">Learn with cards</property>
+    <property name="comments" translatable="yes">Memorize anything</property>
     <property name="website">@PACKAGE_URL@</property>
     <property name="developers">@CONTRIBUTORS@</property>
     <property name="developer_name">Felipe Kinoshita</property>

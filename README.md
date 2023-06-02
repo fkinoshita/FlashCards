@@ -4,7 +4,7 @@
   Flash Cards
 </h1>
 
-<p align="center"><strong>Learn with cards</strong></p>
+<p align="center"><strong>Memorize anything</strong></p>
 
 <p align="center">
   <img src="/data/screenshots/preview.png" alt="Preview"/>

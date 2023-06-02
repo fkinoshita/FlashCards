@@ -8,12 +8,12 @@
   <update_contact>fkinoshita@gnome.org</update_contact>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
-  <summary>Learn with cards</summary>
+  <summary>Memorize anything</summary>
   <translation type="gettext">@APPID@</translation>
 	<description>
 	  <p>
 	    Flash Cards is a simple flash cards app, it makes it easy to create decks
-	    for learning new languages, new subjects or anything you want to get better at.
+	    for learning new languages, memorizing terms and definitions or anything you want to get better at.
 	  </p>
 	</description>
   <requires>

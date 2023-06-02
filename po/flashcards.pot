@@ -57,7 +57,7 @@ msgid "Edit Card"
 msgstr ""
 
 #: data/about_dialog.ui.in:6
-msgid "Learn with cards"
+msgid "Memorize anything"
 msgstr ""
 
 #. Add your name to the translator credits list
