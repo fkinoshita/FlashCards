@@ -84,26 +84,7 @@ class Window(Adw.ApplicationWindow):
         self.decks_model = Gio.ListStore.new(Deck)
         self.current_deck = None
 
-        decks = []
-
-        if shared.decks_dir.is_dir():
-            for open_file in shared.decks_dir.iterdir():
-                data = json.load(open_file.open())
-                decks.append(data)
-
-        for d in decks:
-            deck = Deck(d['name'])
-            deck.id = d['id']
-            deck.icon = d['icon']
-
-            for c in d['cards']:
-                card = Card()
-                card.front = c['front']
-                card.back = c['back']
-
-                deck.cards_model.append(card)
-
-            self.decks_model.append(deck)
+        self._load_decks()
 
         self.welcome_page = Welcome()
         self.list_view = ListView()
@@ -330,6 +311,29 @@ class Window(Adw.ApplicationWindow):
         self.card_view.edit_button.connect('clicked', self.__on_card_edit_button_changed)
 
         self.deck_view.emoji_chooser.connect('emoji-picked', self.__on_emoji_picked)
+
+
+    def _load_decks(self):
+        decks = []
+
+        if shared.decks_dir.is_dir():
+            for open_file in shared.decks_dir.iterdir():
+                data = json.load(open_file.open())
+                decks.append(data)
+
+        for d in decks:
+            deck = Deck(d['name'])
+            deck.id = d['id']
+            deck.icon = d['icon']
+
+            for c in d['cards']:
+                card = Card()
+                card.front = c['front']
+                card.back = c['back']
+
+                deck.cards_model.append(card)
+
+            self.decks_model.append(deck)
 
 
     def _go_to_deck(self, is_new: bool):
