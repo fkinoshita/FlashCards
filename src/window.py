@@ -267,13 +267,12 @@ class Window(Adw.ApplicationWindow):
         self.decks_model.emit('items-changed', 0, 0, 0)
 
 
-    def __on_deck_selection_mode_button_toggled(self, button):
+    def __on_deck_selection_mode_button_clicked(self, button):
         if self.list_view.decks_list.get_selection_mode() == Gtk.SelectionMode.NONE:
-            self.list_view.decks_list.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
             self.list_view.set_selection_mode(True)
-        else:
-            self.list_view.decks_list.set_selection_mode(Gtk.SelectionMode.NONE)
-            self.list_view.set_selection_mode(False)
+            return
+
+        self.list_view.set_selection_mode(False)
 
 
     def __on_deck_delete_button_clicked(self, button):
@@ -284,7 +283,6 @@ class Window(Adw.ApplicationWindow):
                 os.remove(shared.decks_dir / f"{row.deck.id}.json")
 
         self.list_view.set_selection_mode(False)
-        self.list_view.selection_mode_button.set_active(False)
 
         if self.decks_model.props.n_items < 1:
             deck = Deck()
@@ -298,7 +296,7 @@ class Window(Adw.ApplicationWindow):
 
         self.welcome_page.start_button.connect('clicked', self.__on_start_button_clicked)
         self.list_view.new_deck_button.connect('clicked', self.__on_new_deck_button_clicked)
-        self.list_view.selection_mode_button.connect('toggled', self.__on_deck_selection_mode_button_toggled)
+        self.list_view.selection_mode_button.connect('clicked', self.__on_deck_selection_mode_button_clicked)
         self.list_view.delete_button.connect('clicked', self.__on_deck_delete_button_clicked)
         self.deck_view.new_card_button.connect('clicked', self.__on_new_card_button_clicked)
         self.card_view.show_answer_button.connect('clicked', self.__on_show_answer_button_clicked)

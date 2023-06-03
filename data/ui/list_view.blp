@@ -10,17 +10,22 @@ template $ListView : Gtk.Box {
         title: _("Decks");
       };
 
-      [start]
+      [end]
+      Gtk.Button cancel_button {
+        visible: false;
+        tooltip-text: _("Cancel Selection");
+        label: _("Cancel");
+      }
+
+      [end]
       Gtk.Button delete_button {
         visible: false;
         tooltip-text: _("Delete Selection");
         icon-name: "user-trash-symbolic";
-
-        styles ["destructive-action"]
       }
 
       [end]
-      Gtk.MenuButton {
+      Gtk.MenuButton menu_button {
         menu-model: primary_menu;
         tooltip-text: _("Main Menu");
         icon-name: "open-menu-symbolic";
@@ -28,7 +33,7 @@ template $ListView : Gtk.Box {
       }
 
       [end]
-      Gtk.ToggleButton selection_mode_button {
+      Gtk.Button selection_mode_button {
         tooltip-text: _("Selection Mode");
         icon-name: "selection-mode-symbolic";
       }
