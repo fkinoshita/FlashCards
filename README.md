@@ -14,6 +14,11 @@
 
 Flash Cards is a simple flash cards app.
 
+## CI Build (Not recommended)
+
+If you want to quickly test FlashCards you can grab the latest CI build [here](https://nightly.link/fkinoshita/FlashCards/workflows/flatpak/main).
+Then you need to unzip the archive's content and install the application with the command `flatpak install flashcards.flatpak`.
+
 ## Code of conduct
 
 Flash Cards follows the GNOME project [Code of Conduct](./code-of-conduct.md). All
