@@ -1,27 +1,26 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $Welcome : Gtk.Box {
-  orientation: vertical;
+template $Welcome : Adw.NavigationPage {
+  tag: "welcome_page";
 
-  Adw.HeaderBar {
-    title-widget: Adw.WindowTitle {
-      title: "";
-    };
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: "";
+      };
 
-    styles ["flat"]
-
-    [end]
-    Gtk.MenuButton {
-      menu-model: primary_menu;
-      tooltip-text: _("Main Menu");
-      icon-name: "open-menu-symbolic";
-      primary: true;
+      [end]
+      Gtk.MenuButton {
+        menu-model: primary_menu;
+        tooltip-text: _("Main Menu");
+        icon-name: "open-menu-symbolic";
+        primary: true;
+      }
     }
-  }
 
-  Gtk.Box {
-    Adw.StatusPage {
+    content: Adw.StatusPage {
       title: _("Flash Cards");
       description: _("Get started with your first deck");
       icon-name: "io.github.fkinoshita.FlashCards";
@@ -36,8 +35,8 @@ template $Welcome : Gtk.Box {
 
         styles ["suggested-action", "pill"]
       }
-    }
-  }
+    };
+  };
 }
 
 menu primary_menu {

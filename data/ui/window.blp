@@ -9,8 +9,6 @@ template $Window : Adw.ApplicationWindow {
   height-request: 300;
 
   content: Adw.ToastOverlay toast_overlay {
-    child: Adw.Leaflet leaflet {
-      can-unfold: false;
-    };
+    child: Adw.NavigationView navigation_view {};
   };
 }

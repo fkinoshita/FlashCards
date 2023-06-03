@@ -3,7 +3,7 @@
 from gi.repository import Adw, Gtk
 
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/list_view.ui')
-class ListView(Gtk.Box):
+class ListView(Adw.NavigationPage):
     __gtype_name__ = 'ListView'
 
     delete_button = Gtk.Template.Child()

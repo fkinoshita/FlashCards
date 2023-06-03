@@ -3,10 +3,9 @@
 from gi.repository import Adw, Gtk
 
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/card_view.ui')
-class CardView(Gtk.Box):
+class CardView(Adw.NavigationPage):
     __gtype_name__ = 'CardView'
 
-    back_button = Gtk.Template.Child()
     card_box = Gtk.Template.Child()
     front_label = Gtk.Template.Child()
     back_label = Gtk.Template.Child()

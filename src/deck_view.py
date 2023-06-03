@@ -3,10 +3,9 @@
 from gi.repository import Adw, Gtk
 
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/deck_view.ui')
-class DeckView(Gtk.Box):
+class DeckView(Adw.NavigationPage):
     __gtype_name__ = 'DeckView'
 
-    back_button = Gtk.Template.Child()
     delete_button = Gtk.Template.Child()
     cancel_button = Gtk.Template.Child()
     selection_mode_button = Gtk.Template.Child()

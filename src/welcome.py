@@ -3,7 +3,7 @@
 from gi.repository import Adw, Gtk
 
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/welcome.ui')
-class Welcome(Gtk.Box):
+class Welcome(Adw.NavigationPage):
     __gtype_name__ = 'Welcome'
 
     start_button = Gtk.Template.Child()

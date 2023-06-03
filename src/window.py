@@ -76,7 +76,7 @@ class Window(Adw.ApplicationWindow):
     __gtype_name__ = 'Window'
 
     toast_overlay = Gtk.Template.Child()
-    leaflet = Gtk.Template.Child()
+    navigation_view = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -106,31 +106,19 @@ class Window(Adw.ApplicationWindow):
             self.decks_model.append(deck)
 
         self.welcome_page = Welcome()
-
-        self.app_view = Gtk.Box()
-
         self.list_view = ListView()
         self.list_view.decks_list.bind_model(self.decks_model, self.__decks_list_create_row)
         self.deck_view = DeckView()
         self.card_view = CardView()
 
-        leaflet = Adw.Leaflet()
-        leaflet.set_can_unfold(False)
-
-        leaflet.append(self.list_view)
-        leaflet.append(self.deck_view)
-        leaflet.append(self.card_view)
-
-        leaflet.set_can_navigate_back(True)
-
-        self.app_view.append(leaflet)
-
         self._setup_signals()
 
         if self.decks_model.props.n_items < 1:
-            self.leaflet.append(self.welcome_page)
+            self.navigation_view.add(self.welcome_page)
 
-        self.leaflet.append(self.app_view)
+        self.navigation_view.add(self.list_view)
+        self.navigation_view.add(self.deck_view)
+        self.navigation_view.add(self.card_view)
 
 
     def __decks_list_create_row(self, deck):
@@ -189,8 +177,8 @@ class Window(Adw.ApplicationWindow):
         self.card_view.front_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].front)
         self.card_view.back_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].back)
 
-        self.app_view.get_first_child().reorder_child_after(self.deck_view, self.card_view)
-        self.app_view.get_first_child().set_visible_child(self.card_view)
+        self.navigation_view.push_by_tag("card_view")
+        self.navigation_view.replace_with_tags(["list_view", "card_view"])
 
 
     def __on_edit_deck_button_clicked(self, button, deck):
@@ -250,7 +238,7 @@ class Window(Adw.ApplicationWindow):
 
             if self.current_deck.current_index + 1 > self.current_deck.cards_model.props.n_items:
                 self.current_deck.current_index = 0
-                self.app_view.get_first_child().set_visible_child(self.list_view)
+                self.navigation_view.pop()
                 return
 
             self.card_view.front_label.set_label(self.current_deck.cards_model[self.current_deck.current_index].front)
@@ -268,10 +256,6 @@ class Window(Adw.ApplicationWindow):
     def __on_card_edit_button_changed(self, button):
         self._go_to_deck(False)
         self._show_card_edit_dialog(self.current_deck.cards_model[self.current_deck.current_index])
-
-
-    def __on_back_button(self, button):
-        self.app_view.get_first_child().set_visible_child(self.list_view)
 
 
     def __on_emoji_picked(self, emoji_chooser, emoji_text):
@@ -345,14 +329,12 @@ class Window(Adw.ApplicationWindow):
         self.card_view.show_answer_button.connect('clicked', self.__on_show_answer_button_clicked)
         self.card_view.edit_button.connect('clicked', self.__on_card_edit_button_changed)
 
-        self.deck_view.back_button.connect('clicked', self.__on_back_button)
-        self.card_view.back_button.connect('clicked', self.__on_back_button)
-
         self.deck_view.emoji_chooser.connect('emoji-picked', self.__on_emoji_picked)
 
 
     def _go_to_deck(self, is_new: bool):
-        self.leaflet.set_visible_child(self.app_view)
+        self.navigation_view.push_by_tag("deck_view")
+        self.navigation_view.replace_with_tags(["list_view", "deck_view"])
 
         if self.current_deck.cards_model.props.n_items < 1:
             self.deck_view.cards_list.remove_css_class('boxed-list')
@@ -372,9 +354,6 @@ class Window(Adw.ApplicationWindow):
 
         if is_new:
             self.deck_view.name_entry.grab_focus()
-
-        self.app_view.get_first_child().reorder_child_after(self.card_view, self.deck_view)
-        self.app_view.get_first_child().set_visible_child(self.deck_view)
 
 
     def _show_card_edit_dialog(self, card):

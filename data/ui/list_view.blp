@@ -1,8 +1,10 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ListView : Gtk.Box {
-  Adw.ToolbarView {
+template $ListView : Adw.NavigationPage {
+  tag: "list_view";
+
+  child: Adw.ToolbarView {
 
     [top]
     Adw.HeaderBar {
@@ -84,7 +86,7 @@ template $ListView : Gtk.Box {
         }
       };
     };
-  }
+  };
 }
 
 menu primary_menu {
