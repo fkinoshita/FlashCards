@@ -149,9 +149,12 @@ class Window(Adw.ApplicationWindow):
         if not self.deck_view.cards_list.has_css_class('boxed-list'):
             self.deck_view.cards_list.add_css_class('boxed-list')
 
+        self.deck_view.selection_mode_button.set_visible(True)
+
         row = CardRow(card)
         row.connect('activated', self.__on_edit_card_button_clicked, card)
         row.edit_button.connect('clicked', self.__on_edit_card_button_clicked, card)
+        row.checkbox.connect('toggled', self.__on_card_checkbox_toggled, row)
 
         return row
 
@@ -204,7 +207,18 @@ class Window(Adw.ApplicationWindow):
 
 
     def __on_edit_card_button_clicked(self, _button, card):
+        if not self.deck_view.cards_list.get_selection_mode() == Gtk.SelectionMode.NONE:
+            return
+
         self._show_card_edit_dialog(card)
+
+
+    def __on_card_checkbox_toggled(self, button, row):
+        if button.get_active():
+            self.deck_view.cards_list.select_row(row)
+            return
+
+        self.deck_view.cards_list.unselect_row(row)
 
 
     def __on_new_card_button_clicked(self, button):
@@ -291,14 +305,43 @@ class Window(Adw.ApplicationWindow):
             self.decks_model.append(deck)
 
 
+    def __on_card_selection_mode_button_clicked(self, button):
+        if self.deck_view.cards_list.get_selection_mode() == Gtk.SelectionMode.NONE:
+            self.deck_view.set_selection_mode(True)
+            return
+
+        self.deck_view.set_selection_mode(False)
+
+
+    def __on_card_delete_button_clicked(self, button):
+        for row in self.deck_view.cards_list.get_selected_rows():
+            if row.get_name() == 'GtkBox':
+                continue
+
+            found, position = self.current_deck.cards_model.find(row.card)
+            if found:
+                self.current_deck.cards_model.remove(position)
+                self.current_deck.save()
+
+        self.deck_view.set_selection_mode(False)
+
+        if self.current_deck.cards_model.props.n_items < 1:
+            self.deck_view.selection_mode_button.set_visible(False)
+
+
     def _setup_signals(self):
         self.decks_model.connect('items-changed', lambda *_: self.list_view.decks_list.bind_model(self.decks_model, self.__decks_list_create_row))
 
         self.welcome_page.start_button.connect('clicked', self.__on_start_button_clicked)
+
         self.list_view.new_deck_button.connect('clicked', self.__on_new_deck_button_clicked)
         self.list_view.selection_mode_button.connect('clicked', self.__on_deck_selection_mode_button_clicked)
         self.list_view.delete_button.connect('clicked', self.__on_deck_delete_button_clicked)
+
         self.deck_view.new_card_button.connect('clicked', self.__on_new_card_button_clicked)
+        self.deck_view.selection_mode_button.connect('clicked', self.__on_card_selection_mode_button_clicked)
+        self.deck_view.delete_button.connect('clicked', self.__on_card_delete_button_clicked)
+
         self.card_view.show_answer_button.connect('clicked', self.__on_show_answer_button_clicked)
         self.card_view.edit_button.connect('clicked', self.__on_card_edit_button_changed)
 

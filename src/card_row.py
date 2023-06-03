@@ -6,10 +6,15 @@ from gi.repository import Adw, Gtk
 class CardRow(Adw.ActionRow):
     __gtype_name__ = 'CardRow'
 
+    revealer = Gtk.Template.Child()
+    checkbox = Gtk.Template.Child()
+    title_label = Gtk.Template.Child()
     edit_button = Gtk.Template.Child()
 
     def __init__(self, card, **kwargs):
         super().__init__(**kwargs)
 
-        self.set_title(card.front)
+        self.card = card
+
+        self.title_label.set_label(card.front)
 

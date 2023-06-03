@@ -5,16 +5,28 @@ template $CardRow : Adw.ActionRow {
   title_lines: 1;
   activatable: true;
 
-  [suffix]
+  [prefix]
   Gtk.Box {
     valign: center;
-    spacing: 12;
 
-    Gtk.Button edit_button {
-      tooltip-text: _("Edit Card");
-      icon-name: "document-edit-symbolic";
+    Gtk.Revealer revealer {
+      transition-type: slide_right;
 
-      styles ["circular"]
+      Gtk.CheckButton checkbox {
+        styles ["selection-mode"]
+      }
     }
+
+    Gtk.Label title_label {
+    }
+  }
+
+  [suffix]
+  Gtk.Button edit_button {
+    tooltip-text: _("Edit Card");
+    icon-name: "document-edit-symbolic";
+    valign: center;
+
+    styles ["circular"]
   }
 }

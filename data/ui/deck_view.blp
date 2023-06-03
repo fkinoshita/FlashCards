@@ -17,11 +17,32 @@ template $DeckView : Gtk.Box {
       }
 
       [end]
-      Gtk.MenuButton {
+      Gtk.Button cancel_button {
+        visible: false;
+        tooltip-text: _("Cancel Selection");
+        label: _("Cancel");
+      }
+
+      [end]
+      Gtk.Button delete_button {
+        visible: false;
+        tooltip-text: _("Delete Selection");
+        icon-name: "user-trash-symbolic";
+      }
+
+      [end]
+      Gtk.MenuButton menu_button {
         menu-model: primary_menu;
         tooltip-text: _("Main Menu");
         icon-name: "open-menu-symbolic";
         primary: true;
+      }
+
+      [end]
+      Gtk.Button selection_mode_button {
+        visible: false;
+        tooltip-text: _("Selection Mode");
+        icon-name: "selection-mode-symbolic";
       }
     }
 
