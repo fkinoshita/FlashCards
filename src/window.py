@@ -195,9 +195,15 @@ class Window(Adw.ApplicationWindow):
         card.front = ''
         card.back = ''
 
+        self._show_card_edit_dialog(card)
+
+
+    def __on_card_edit_dialog_closed(self, dialog, card):
+        if len(card.front) < 1 or len(card.back) < 1:
+            return
+
         self.current_deck.cards_model.append(card)
         self.decks_model.emit('items-changed', 0, 0, 0)
-        self._show_card_edit_dialog(card)
 
 
     def __on_deck_name_changed(self, entry):
@@ -366,6 +372,7 @@ class Window(Adw.ApplicationWindow):
                             modal=True)
         dialog.set_size_request(300, 300)
         dialog.set_default_size(420, 420)
+        dialog.connect('close-request', self.__on_card_edit_dialog_closed, card)
 
         trigger = Gtk.ShortcutTrigger.parse_string("Escape");
         close_action = Gtk.CallbackAction().new(lambda dialog, _: dialog.close())
