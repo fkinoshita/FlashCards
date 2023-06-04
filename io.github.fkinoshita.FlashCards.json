@@ -1,5 +1,5 @@
 {
-    "app-id" : "io.github.fkinoshita.FlashCards",
+    "id" : "io.github.fkinoshita.FlashCards",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "master",
     "sdk" : "org.gnome.Sdk",
