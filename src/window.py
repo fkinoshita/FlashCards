@@ -347,7 +347,7 @@ class Window(Adw.ApplicationWindow):
 
         title = ''
         if is_new:
-            title = _('Create Deck')
+            title = _('New Deck')
         else:
             title = _('Edit Deck')
 
