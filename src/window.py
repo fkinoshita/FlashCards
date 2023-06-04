@@ -196,6 +196,7 @@ class Window(Adw.ApplicationWindow):
         card.back = ''
 
         self.current_deck.cards_model.append(card)
+        self.decks_model.emit('items-changed', 0, 0, 0)
         self._show_card_edit_dialog(card)
 
 

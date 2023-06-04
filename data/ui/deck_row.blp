@@ -22,6 +22,17 @@ template $DeckRow : Adw.ActionRow {
 
       styles ["title-1"]
     }
+
+    Gtk.Label deck_name {
+      margin-start: 12;
+    }
+
+    Gtk.Label cards_count {
+      visible: false;
+      margin-start: 12;
+
+      styles ["counter"]
+    }
   }
 
   [suffix]

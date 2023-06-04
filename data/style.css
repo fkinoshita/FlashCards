@@ -45,3 +45,12 @@ list .activatable {
   background-color: transparent;
 }
 
+.counter {
+  background-color: @card_shade_color;
+  border-radius: 9999px;
+  margin: 6px 0;
+  padding: 0 12px;
+  font-size: .8rem;
+  font-weight: bold;
+}
+
