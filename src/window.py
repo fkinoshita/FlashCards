@@ -34,7 +34,7 @@ class Deck(GObject.Object):
     cards_model = GObject.Property(type=Gio.ListStore)
     current_index = GObject.Property(type=int)
 
-    def __init__(self, name = '', **kargs):
+    def __init__(self, name = _('New Deck'), **kargs):
         super().__init__(**kargs)
 
         self.id = str(uuid.uuid4().hex)
