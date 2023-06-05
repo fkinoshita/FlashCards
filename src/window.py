@@ -266,7 +266,8 @@ class Window(Adw.ApplicationWindow):
             found, position = self.decks_model.find(row.deck)
             if found:
                 self.decks_model.remove(position)
-                os.remove(shared.decks_dir / f"{row.deck.id}.json")
+                if os.path.isfile(shared.decks_dir / f"{row.deck.id}.json"):
+                    os.remove(shared.decks_dir / f"{row.deck.id}.json")
 
         self.list_view.set_selection_mode(False)
 
