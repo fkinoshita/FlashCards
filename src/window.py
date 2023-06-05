@@ -202,8 +202,10 @@ class Window(Adw.ApplicationWindow):
         if len(card.front) < 1 or len(card.back) < 1:
             return
 
-        self.current_deck.cards_model.append(card)
-        self.decks_model.emit('items-changed', 0, 0, 0)
+        found, position = self.current_deck.cards_model.find(card)
+        if not found:
+            self.current_deck.cards_model.append(card)
+            self.decks_model.emit('items-changed', 0, 0, 0)
 
 
     def __on_deck_name_changed(self, entry):
