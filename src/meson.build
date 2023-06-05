@@ -9,7 +9,6 @@ conf.set('LOCALE_DIR', join_paths(get_option('prefix'), get_option('datadir'), '
 conf.set('NAME', project_name)
 conf.set('PYTHON', python.find_installation('python3').full_path())
 conf.set('DATA_DIR', DATA_DIR)
-conf.set('APPID', application_id)
 
 configure_file(
   input: 'flashcards.in',
