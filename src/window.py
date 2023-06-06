@@ -149,6 +149,7 @@ class Window(Adw.ApplicationWindow):
         self.current_deck = deck
 
         if not self.list_view.decks_list.get_selection_mode() == Gtk.SelectionMode.NONE:
+            row.checkbox.set_active(not row.checkbox.get_active())
             return
 
         if self.current_deck.cards_model.props.n_items == 0:
