@@ -115,6 +115,9 @@ class Window(Adw.ApplicationWindow):
         row.connect('activated', self.__on_deck_activated, deck)
         row.checkbox.connect('toggled', self.__on_deck_checkbox_toggled, row)
 
+        if not len(row.deck_icon.get_label()) < 1:
+            row.deck_icon.set_margin_end(12)
+
         return row
 
 
