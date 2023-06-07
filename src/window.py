@@ -14,6 +14,8 @@ from .card_edit_view import CardEditView
 from .deck_row import DeckRow
 from .card_row import CardRow
 
+import const
+
 from . import shared
 
 class Card(GObject.Object):
@@ -84,6 +86,9 @@ class Window(Adw.ApplicationWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        if const.PROFILE == 'Devel':
+            self.add_css_class('devel')
 
         self.decks_model = Gio.ListStore.new(Deck)
         self.current_deck = None

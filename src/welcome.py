@@ -2,12 +2,17 @@
 
 from gi.repository import Adw, Gtk
 
+import const
+
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/welcome.ui')
 class Welcome(Adw.NavigationPage):
     __gtype_name__ = 'Welcome'
 
+    status_page = Gtk.Template.Child()
     start_button = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
+        self.status_page.set_icon_name(const.APP_ID)
+

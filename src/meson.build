@@ -1,5 +1,19 @@
 moduledir = join_paths(DATA_DIR, 'flashcards')
 
+const = configuration_data()
+const.set('PYTHON', python.find_installation('python3').full_path())
+const.set('APPID', application_id)
+message(application_id)
+const.set('PROFILE', profile)
+
+configure_file(
+  input: 'const.py.in',
+  output: 'const.py',
+  configuration: const,
+  install_dir: get_option('bindir'),
+  install: true
+)
+
 conf = configuration_data()
 
 conf.set('VERSION', version)

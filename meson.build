@@ -30,8 +30,20 @@ dependency('libadwaita-1', version: '>=1.2')
 
 DATA_DIR = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
 
+# Profiles
 application_id = project_id
-version = meson.project_version()
+if get_option('profile') == 'development'
+    profile = 'Devel'
+    application_id = '@0@.Devel'.format(application_id)
+
+    find_program('git')
+    rev_txt = run_command('git', 'rev-parse', '--short', 'HEAD').stdout().strip()
+    version = meson.project_version() + '-' + rev_txt
+else
+    profile = ''
+    version = meson.project_version()
+endif
+
 
 top_source_dir = meson.current_source_dir()
 gettext_package = meson.project_name()
