@@ -71,6 +71,10 @@ class Deck(GObject.Object):
         )
 
 
+    def delete(self):
+        os.remove(shared.decks_dir / f"{self.id}.json")
+
+
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/window.ui')
 class Window(Adw.ApplicationWindow):
     __gtype_name__ = 'Window'
@@ -270,7 +274,7 @@ class Window(Adw.ApplicationWindow):
             if found:
                 self.decks_model.remove(position)
                 if os.path.isfile(shared.decks_dir / f"{row.deck.id}.json"):
-                    os.remove(shared.decks_dir / f"{row.deck.id}.json")
+                    row.deck.delete()
 
         self.list_view.set_selection_mode(False)
 
