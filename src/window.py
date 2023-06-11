@@ -211,15 +211,15 @@ class Window(Adw.ApplicationWindow):
         self._show_card_edit_dialog(card)
 
 
-    def __on_card_edit_dialog_closed(self, dialog, card):
+    def __on_create_card_button_clicked(self, button, dialog, card):
         if len(card.front) < 1 or len(card.back) < 1:
             return
 
-        found, position = self.current_deck.cards_model.find(card)
-        if not found:
-            self.current_deck.cards_model.append(card)
-            self.current_deck.save()
-            self.decks_model.emit('items-changed', 0, 0, 0)
+        self.current_deck.cards_model.append(card)
+        self.current_deck.save()
+        self.decks_model.emit('items-changed', 0, 0, 0)
+
+        dialog.close()
 
 
     def __on_deck_name_changed(self, entry):
@@ -388,8 +388,7 @@ class Window(Adw.ApplicationWindow):
         dialog = Adw.Window(transient_for=self,
                             modal=True)
         dialog.set_size_request(300, 300)
-        dialog.set_default_size(420, 420)
-        dialog.connect('close-request', self.__on_card_edit_dialog_closed, card)
+        dialog.set_default_size(360, 480)
 
         trigger = Gtk.ShortcutTrigger.parse_string("Escape");
         close_action = Gtk.CallbackAction().new(lambda dialog, _: dialog.close())
@@ -399,12 +398,14 @@ class Window(Adw.ApplicationWindow):
         view = Adw.ToolbarView()
 
         top = Adw.HeaderBar()
-        title = Adw.WindowTitle(title=_('Edit Card'))
+        title = Adw.WindowTitle()
         top.set_title_widget(title)
         view.add_top_bar(top)
 
         card_edit_view = CardEditView(self, card)
         view.set_content(card_edit_view)
+
+        card_edit_view.create_card_button.connect('clicked', self.__on_create_card_button_clicked, dialog, card)
 
         dialog.set_content(view)
 

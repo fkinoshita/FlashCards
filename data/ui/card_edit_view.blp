@@ -2,66 +2,113 @@ using Gtk 4.0;
 using Adw 1;
 
 template $CardEditView : Gtk.Box {
-  orientation: vertical;
+
   hexpand: true;
   vexpand: true;
-  margin-top: 12;
-  margin-bottom: 24;
-  margin-start: 24;
-  margin-end: 24;
-  spacing: 12;
 
-  Adw.PreferencesGroup {
-    title: _("Front Side");
 
-    Gtk.Box {
-      orientation: vertical;
+  Adw.ToolbarView {
+    [top]
+      Gtk.Label {
+      label: _("New Card");
       hexpand: true;
-      vexpand: true;
+      halign: center;
 
-      styles ["card", "text-box"]
-
-      Gtk.ScrolledWindow {
-        margin-top: 12;
-        margin-bottom: 0;
-        margin-start: 12;
-        margin-end: 12;
-
-        styles ["scrolled-window"]
-
-        Gtk.TextView front_side_view {
-          wrap-mode: word_char;
-          hexpand: true;
-          vexpand: true;
-        }
-      }
+      styles ["title-1"]
     }
-  }
 
-  Adw.PreferencesGroup {
-    title: _("Back Side");
-
-    Gtk.Box {
+    content: Gtk.Box {
       orientation: vertical;
-      hexpand: true;
-      vexpand: true;
+      margin-top: 6;
+      margin-bottom: 24;
+      margin-start: 24;
+      margin-end: 24;
+      spacing: 12;
 
-      styles ["card", "text-box"]
+      Adw.PreferencesGroup {
+        title: _("Front Side");
 
-      Gtk.ScrolledWindow {
-        margin-top: 12;
-        margin-bottom: 0;
-        margin-start: 12;
-        margin-end: 12;
-
-        styles ["scrolled-window"]
-
-        Gtk.TextView back_side_view {
-          wrap-mode: word_char;
+        Gtk.Box {
+          orientation: vertical;
           hexpand: true;
           vexpand: true;
+
+          styles ["card", "text-box"]
+
+          Gtk.ScrolledWindow {
+            margin-top: 12;
+            margin-bottom: 12;
+            margin-start: 12;
+            margin-end: 12;
+
+            styles ["scrolled-window"]
+
+            Gtk.Overlay {
+              child: Gtk.TextView front_side_view {
+                wrap-mode: word_char;
+                hexpand: true;
+                vexpand: true;
+              };
+
+              [overlay]
+              Gtk.Label front_placeholder {
+                visible: false;
+                label: _("Insert the front side here...");
+                halign: start;
+                valign: start;
+                sensitive: false;
+              }
+            }
+          }
         }
       }
+
+      Adw.PreferencesGroup {
+        title: _("Back Side");
+
+        Gtk.Box {
+          orientation: vertical;
+          hexpand: true;
+          vexpand: true;
+
+          styles ["card", "text-box"]
+
+          Gtk.ScrolledWindow {
+            margin-top: 12;
+            margin-bottom: 12;
+            margin-start: 12;
+            margin-end: 12;
+
+            styles ["scrolled-window"]
+
+            Gtk.Overlay {
+              child: Gtk.TextView back_side_view {
+                wrap-mode: word_char;
+                hexpand: true;
+                vexpand: true;
+              };
+
+              [overlay]
+              Gtk.Label back_placeholder {
+                visible: false;
+                label: _("Insert the back side here...");
+                halign: start;
+                valign: start;
+                sensitive: false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    [bottom]
+    Gtk.Button create_card_button {
+      label: _("Create Card");
+      halign: center;
+      margin-bottom: 18;
+
+      styles ["suggested-action", "pill"]
     }
   }
 }
