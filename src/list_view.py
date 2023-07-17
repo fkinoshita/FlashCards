@@ -21,7 +21,7 @@ class ListView(Adw.NavigationPage):
 
 
     def __decks_selected_rows_changed(self, list):
-        self.delete_button.set_sensitive(len(list.get_selected_rows()) <= 0)
+        self.delete_button.set_sensitive(not len(list.get_selected_rows()) <= 0)
 
 
     def set_selection_mode(self, active):
