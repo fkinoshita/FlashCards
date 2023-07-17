@@ -39,10 +39,13 @@ class ListView(Adw.NavigationPage):
             row.revealer.set_reveal_child(active)
 
             if row.revealer.get_reveal_child() and active:
-                row.revealer.set_margin_end(12 if active else 0)
+                row.revealer.set_margin_end(12)
+            elif not row.revealer.get_reveal_child() and not active:
+                row.revealer.set_margin_end(0)
+
+            if not active:
+                row.checkbox.set_active(False)
+
 
         if active:
             self.decks_list.get_first_child().checkbox.set_active(True)
-        else:
-            row.checkbox.set_active(False)
-
