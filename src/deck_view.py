@@ -27,51 +27,34 @@ class DeckView(Adw.NavigationPage):
 
 
     def __cards_selected_rows_changed(self, list):
-        if len(list.get_selected_rows()) <= 0:
-            self.delete_button.set_sensitive(False)
-        else:
-            self.delete_button.set_sensitive(True)
+        self.delete_button.set_sensitive(not len(list.get_selected_rows()) <= 0)
 
 
     def set_selection_mode(self, active):
-        if active:
-            self.cards_list.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
 
-            self.cancel_button.set_visible(True)
-            self.delete_button.set_visible(True)
-            self.new_card_button.set_visible(False)
-            self.selection_mode_button.set_visible(False)
-            self.menu_button.set_visible(False)
+        self.cards_list.set_selection_mode(Gtk.SelectionMode.MULTIPLE if active else Gtk.SelectionMode.NONE)
 
-            for row in self.cards_list.observe_children():
-                if row.get_name() == 'GtkBox':
-                    continue
+        self.cancel_button.set_visible(active)
+        self.delete_button.set_visible(active)
+        self.new_card_button.set_visible(not active)
+        self.selection_mode_button.set_visible(not active)
+        self.menu_button.set_visible(not active)
 
-                row.edit_button.set_visible(False)
-                row.revealer.set_reveal_child(True)
+        for row in self.cards_list.observe_children():
+            if row.get_name() == 'GtkBox':
+                continue
 
-                if row.revealer.get_reveal_child():
-                    row.revealer.set_margin_end(12)
+            row.edit_button.set_visible(not active)
+            row.revealer.set_reveal_child(active)
 
-            self.cards_list.get_first_child().checkbox.set_active(True)
-        else:
-            self.cards_list.set_selection_mode(Gtk.SelectionMode.NONE)
+            if active and row.revealer.get_reveal_child():
+                row.revealer.set_margin_end(12)
+            elif not active and not row.revealer.get_reveal_child():
+                row.revealer.set_margin_end(0)
 
-            self.cancel_button.set_visible(False)
-            self.delete_button.set_visible(False)
-            self.new_card_button.set_visible(True)
-            self.selection_mode_button.set_visible(True)
-            self.menu_button.set_visible(True)
-
-            for row in self.cards_list.observe_children():
-                if row.get_name() == 'GtkBox':
-                    continue
-
-                row.edit_button.set_visible(True)
-                row.revealer.set_reveal_child(False)
-
-                if not row.revealer.get_reveal_child():
-                    row.revealer.set_margin_end(0)
-
+            if not active:
                 row.checkbox.set_active(False)
+
+        if active:
+            self.cards_list.get_first_child().checkbox.set_active(True)
 
