@@ -21,47 +21,31 @@ class ListView(Adw.NavigationPage):
 
 
     def __decks_selected_rows_changed(self, list):
-        if len(list.get_selected_rows()) <= 0:
-            self.delete_button.set_sensitive(False)
-        else:
-            self.delete_button.set_sensitive(True)
+        self.delete_button.set_sensitive(not len(list.get_selected_rows()) <= 0)
 
 
     def set_selection_mode(self, active):
-        if active:
-            self.decks_list.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
+        self.decks_list.set_selection_mode(Gtk.SelectionMode.MULTIPLE if active else Gtk.SelectionMode.NONE)
 
-            self.cancel_button.set_visible(True)
-            self.delete_button.set_visible(True)
-            self.new_deck_button.set_visible(False)
-            self.selection_mode_button.set_visible(False)
-            self.menu_button.set_visible(False)
+        self.cancel_button.set_visible(active)
+        self.delete_button.set_visible(active)
+        self.new_deck_button.set_visible(not active)
+        self.selection_mode_button.set_visible(not active)
+        self.menu_button.set_visible(not active)
 
-            for row in self.decks_list.observe_children():
-                row.edit_button.set_visible(False)
-                row.next_icon.set_visible(False)
-                row.revealer.set_reveal_child(True)
+        for row in self.decks_list.observe_children():
+            row.edit_button.set_visible(not active)
+            row.next_icon.set_visible(not active)
+            row.revealer.set_reveal_child(active)
 
-                if row.revealer.get_reveal_child():
-                    row.revealer.set_margin_end(12)
+            if row.revealer.get_reveal_child() and active:
+                row.revealer.set_margin_end(12)
+            elif not row.revealer.get_reveal_child() and not active:
+                row.revealer.set_margin_end(0)
 
-            self.decks_list.get_first_child().checkbox.set_active(True)
-        else:
-            self.decks_list.set_selection_mode(Gtk.SelectionMode.NONE)
-
-            self.cancel_button.set_visible(False)
-            self.delete_button.set_visible(False)
-            self.new_deck_button.set_visible(True)
-            self.selection_mode_button.set_visible(True)
-            self.menu_button.set_visible(True)
-
-            for row in self.decks_list.observe_children():
-                row.edit_button.set_visible(True)
-                row.next_icon.set_visible(True)
-                row.revealer.set_reveal_child(False)
-
-                if not row.revealer.get_reveal_child():
-                    row.revealer.set_margin_end(0)
-
+            if not active:
                 row.checkbox.set_active(False)
 
+
+        if active:
+            self.decks_list.get_first_child().checkbox.set_active(True)
