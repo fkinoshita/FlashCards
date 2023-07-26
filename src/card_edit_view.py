@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw, Gtk
+from gi.repository import Gtk
 
 @Gtk.Template(resource_path='/io/github/fkinoshita/FlashCards/ui/card_edit_view.ui')
 class CardEditView(Gtk.Box):

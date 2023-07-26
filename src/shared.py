@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 
-from gi.repository import Gdk, Gio
+from gi.repository import Gio
 
 schema = Gio.Settings.new("io.github.fkinoshita.FlashCards")
 
