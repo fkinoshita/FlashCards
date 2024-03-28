@@ -509,7 +509,7 @@ class Window(Adw.ApplicationWindow):
         self.deck_view.cards_list.bind_model(self.current_deck.cards_model, self.cards_list_create_row)
 
         title = ''
-        if is_new:  ## wenn ein neues deck erstellt wird, wird der Name New Dek als Titel der Karte gesetzt
+        if is_new:
             title = _('New Deck')
         else:
             title = _('Edit Deck')
